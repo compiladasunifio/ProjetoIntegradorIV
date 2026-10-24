@@ -1,1 +1,64 @@
-<p>cadastro-produto works!</p>
+<main class="pagina">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Cadastrar produto</mat-card-title>
+      <mat-card-subtitle>Divulgue seu produto para a comunidade Unifio</mat-card-subtitle>
+    </mat-card-header>
+
+    <form #form="ngForm" (ngSubmit)="salvar(form)" novalidate>
+      <mat-card-content>
+        <mat-form-field appearance="outline">
+          <mat-label>Nome do produto</mat-label>
+          <input matInput name="nome" required [(ngModel)]="produto.nome">
+          <mat-error>Informe o nome do produto.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Descrição</mat-label>
+          <textarea matInput name="descricao" rows="4" required
+                    [(ngModel)]="produto.descricao"></textarea>
+          <mat-error>Descreva o produto.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Preço (R$)</mat-label>
+          <input matInput type="number" name="preco" required min="0.01" step="0.01"
+                 #preco="ngModel" [(ngModel)]="produto.preco">
+          @if (preco.hasError('required')) {
+            <mat-error>Informe o preço.</mat-error>
+          } @else {
+            <mat-error>O preço deve ser maior que zero.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Link da imagem (opcional)</mat-label>
+          <input matInput type="url" name="imagemUrl" [(ngModel)]="produto.imagemUrl">
+          <mat-hint>Endereço de uma imagem do produto</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Onde encontrar na faculdade</mat-label>
+          <input matInput name="localizacao" required [(ngModel)]="produto.localizacao">
+          <mat-hint>Ex.: bloco 1</mat-hint>
+          <mat-error>Informe a localização.</mat-error>
+        </mat-form-field>
+
+        <mat-slide-toggle name="disponivel" [(ngModel)]="produto.disponivel">
+          Disponível para venda
+        </mat-slide-toggle>
+
+        @if (mensagem()) {
+          <p role="status">{{ mensagem() }}</p>
+        }
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-button type="button" (click)="limpar(form)">Limpar</button>
+        <button mat-flat-button type="submit" [disabled]="salvando()">
+          {{ salvando() ? 'Salvando...' : 'Cadastrar produto' }}
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</main>
