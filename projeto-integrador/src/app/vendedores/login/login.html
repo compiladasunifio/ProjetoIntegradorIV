@@ -1,0 +1,41 @@
+<main class="pagina">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Entrar</mat-card-title>
+      <mat-card-subtitle>Acesse sua área de vendedor</mat-card-subtitle>
+    </mat-card-header>
+
+    <form #form="ngForm" (ngSubmit)="entrar(form)" novalidate>
+      <mat-card-content>
+        <mat-form-field appearance="outline">
+          <mat-label>E-mail</mat-label>
+          <input matInput type="email" name="email" required email
+                 autocomplete="username"
+                 #email="ngModel" [(ngModel)]="credenciais.email">
+          @if (email.hasError('required')) {
+            <mat-error>Informe seu e-mail.</mat-error>
+          } @else {
+            <mat-error>E-mail inválido.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" name="senha" required
+                 autocomplete="current-password"
+                 [(ngModel)]="credenciais.senha">
+          <mat-error>Informe sua senha.</mat-error>
+        </mat-form-field>
+
+        @if (mensagem()) {
+          <p role="status">{{ mensagem() }}</p>
+        }
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <a mat-button routerLink="/vendedores/cadastro">Criar conta</a>
+        <button mat-flat-button type="submit">Entrar</button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</main>
