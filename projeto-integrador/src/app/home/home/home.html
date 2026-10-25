@@ -1,24 +1,103 @@
-<main class="pagina">
-  <section class="hero">
-    <h1>UniFood</h1>
-    <p>O espaço dos pequenos empreendedores da nossa faculdade para divulgar seus produtos, de forma simples e independente.</p>
+<section class="hero">
+  <div class="hero-conteudo">
+    <span class="selo">Feito por alunos, para alunos</span>
+    <h1>Bateu a fome de comprar do <span class="destaque">seu colega</span>?</h1>
+    <p>
+      O UniFood reúne os pequenos empreendedores da faculdade em um só lugar.
+      Veja o que está à venda, descubra onde encontrar e combine a compra direto com o vendedor.
+    </p>
     <div class="acoes">
-      <a mat-flat-button routerLink="/catalogo">Ver catálogo</a>
-      <a mat-button routerLink="/vendedores/cadastro">Quero vender</a>
+      <a mat-flat-button class="btn-amarelo" routerLink="/catalogo">Ver catálogo</a>
+      <a mat-stroked-button class="btn-branco" routerLink="/vendedores/cadastro">Quero vender</a>
+    </div>
+  </div>
+</section>
+
+<main class="pagina">
+  <section class="beneficios">
+    @for (b of beneficios; track b.titulo) {
+      <div class="beneficio">
+        <span class="icone"><mat-icon>{{ b.icone }}</mat-icon></span>
+        <div>
+          <h3>{{ b.titulo }}</h3>
+          <p>{{ b.texto }}</p>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section>
+    <div class="titulo-secao">
+      <h2>Em destaque</h2>
+      <a mat-button routerLink="/catalogo">Ver tudo</a>
+    </div>
+    <div class="grade">
+      @for (p of destaques(); track p.id) {
+        <mat-card appearance="outlined" class="produto">
+          @if (p.imagemUrl) {
+            <img class="foto" [src]="p.imagemUrl" [alt]="p.nome">
+          } @else {
+            <div class="foto sem-imagem"><mat-icon>restaurant</mat-icon></div>
+          }
+          <mat-card-content>
+            <h3>{{ p.nome }}</h3>
+            <p class="local"><mat-icon>location_on</mat-icon> {{ p.localizacao }}</p>
+            <div class="rodape-card">
+              <span class="preco">{{ p.preco | currency:'BRL' }}</span>
+              <span class="status" [class.indisponivel]="!p.disponivel">
+                {{ p.disponivel ? 'Disponível' : 'Indisponível' }}
+              </span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      } @empty {
+        <p>Em breve, novos produtos por aqui.</p>
+      }
     </div>
   </section>
 
   <section>
     <h2>Como funciona</h2>
     <div class="passos">
-      @for (p of passos; track p.titulo) {
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>{{ p.titulo }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>{{ p.texto }}</mat-card-content>
-        </mat-card>
+      @for (p of passos; track p.titulo; let i = $index) {
+        <div class="passo">
+          <span class="numero">{{ i + 1 }}</span>
+          <h3>{{ p.titulo }}</h3>
+          <p>{{ p.texto }}</p>
+        </div>
       }
     </div>
+  </section>
+
+  <section class="perfis">
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <h2>Sou comprador</h2>
+        <ul>
+          <li>Consulte produtos, preços e disponibilidade</li>
+          <li>Veja onde encontrar o vendedor na faculdade</li>
+          <li>Fale direto com quem vende, sem cadastro</li>
+        </ul>
+        <a mat-flat-button routerLink="/catalogo">Explorar catálogo</a>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <h2>Sou vendedor</h2>
+        <ul>
+          <li>Divulgue seus produtos sem depender de ninguém</li>
+          <li>Atualize preço e disponibilidade quando quiser</li>
+          <li>Seja encontrado por toda a comunidade acadêmica</li>
+        </ul>
+        <a mat-flat-button routerLink="/vendedores/cadastro">Criar minha conta</a>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <section class="chamada">
+    <h2>Tem um negócio na faculdade?</h2>
+    <p>Cadastre-se e mostre o que você vende para todo mundo.</p>
+    <a mat-flat-button class="btn-amarelo" routerLink="/vendedores/cadastro">Quero vender</a>
   </section>
 </main>

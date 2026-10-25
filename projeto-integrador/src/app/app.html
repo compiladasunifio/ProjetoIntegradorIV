@@ -1,5 +1,8 @@
 <mat-toolbar class="barra">
-  <a class="marca" routerLink="/">UniFood</a>
+  <a class="marca" routerLink="/">
+    <span class="logo"><mat-icon>restaurant</mat-icon></span>
+    UniFood
+  </a>
 
   <nav class="links">
     <a mat-button routerLink="/" routerLinkActive="ativo"
@@ -18,9 +21,17 @@
     <span class="usuario">Olá, {{ auth.vendedor()?.nome }}</span>
     <button mat-button type="button" (click)="sair()">Sair</button>
   } @else {
-    <a mat-button routerLink="/vendedores/login">Entrar como vendedor</a>
+    <a mat-button routerLink="/vendedores/login">Entrar</a>
     <a mat-flat-button routerLink="/vendedores/cadastro">Quero vender</a>
   }
 </mat-toolbar>
 
-<router-outlet></router-outlet>
+<div class="conteudo">
+  <router-outlet></router-outlet>
+</div>
+
+<footer class="rodape">
+  <strong>UniFood</strong>
+  <span>Projeto Integrador IV · Grupo Compiladas</span>
+  <span>Feito por alunos, para a comunidade acadêmica.</span>
+</footer>

@@ -1,16 +1,49 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .barra {
+  --mat-toolbar-container-background-color: #fff;
+  --mat-toolbar-container-text-color: var(--uf-texto);
+  position: sticky;
+  top: 0;
+  z-index: 10;
   height: auto;
-  min-height: 64px;
+  min-height: 68px;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 8px 24px;
+  box-shadow: 0 2px 12px rgba(46, 30, 23, 0.08);
 }
 
 .marca {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-right: 16px;
-  font-weight: 600;
-  color: inherit;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--uf-vermelho);
   text-decoration: none;
+
+  .logo {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--uf-amarelo), var(--uf-laranja));
+    color: #fff;
+
+    mat-icon {
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+    }
+  }
 }
 
 .links {
@@ -24,9 +57,28 @@
 }
 
 .ativo {
-  background: rgba(0, 0, 0, 0.08);
+  background: #ffede6;
+  color: var(--uf-vermelho);
 }
 
 .usuario {
   margin-right: 8px;
+  font-weight: 500;
+}
+
+.conteudo {
+  flex: 1;
+}
+
+.rodape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 24px;
+  padding: 24px 16px;
+  background: var(--uf-texto);
+  color: #fff3e8;
+  font-size: 0.9rem;
+  text-align: center;
 }
