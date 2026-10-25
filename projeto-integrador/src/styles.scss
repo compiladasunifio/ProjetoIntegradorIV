@@ -16,13 +16,16 @@ html {
 }
 
 :root {
-  --uf-vermelho: #E8262B;
-  --uf-laranja: #F04E23;
-  --uf-amarelo: #FFC531;
-  --uf-fundo: #FFF8F1;
+  // Cores do logo
+  --uf-vermelho: #D20000;
+  --uf-vermelho-escuro: #8F0000;
+  --uf-laranja: #FF751F;
+  --uf-amarelo: #F7DB19; // só como detalhe
+  --uf-fundo: #FFF6EE;
+  --uf-fundo-laranja: #FFE9D8;
   --uf-texto: #2E1E17;
   --uf-verde: #2E9E5B;
-  --uf-borda: #F1DDD0;
+  --uf-borda: #F6D5BF;
 
   // Ajusta o Material para a marca
   --mat-sys-primary: var(--uf-vermelho);
@@ -32,7 +35,7 @@ html {
   --mat-sys-surface: #fff;
   --mat-sys-on-surface: var(--uf-texto);
 
-  // Formas arredondadas, como nos apps de delivery
+  // Formas arredondadas
   --mat-card-outlined-container-shape: 16px;
   --mat-card-outlined-outline-color: var(--uf-borda);
   --mat-button-filled-container-shape: 999px;

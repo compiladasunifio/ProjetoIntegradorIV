@@ -11,39 +11,26 @@
   top: 0;
   z-index: 10;
   height: auto;
-  min-height: 68px;
+  min-height: 72px;
   flex-wrap: wrap;
   gap: 8px;
   padding: 8px 24px;
   box-shadow: 0 2px 12px rgba(46, 30, 23, 0.08);
+  border-bottom: 4px solid transparent;
+  border-image: linear-gradient(90deg, var(--uf-vermelho), var(--uf-laranja)) 1;
 }
 
 .marca {
   display: flex;
   align-items: center;
-  gap: 8px;
   margin-right: 16px;
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--uf-vermelho);
-  text-decoration: none;
+}
 
-  .logo {
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--uf-amarelo), var(--uf-laranja));
-    color: #fff;
-
-    mat-icon {
-      width: 20px;
-      height: 20px;
-      font-size: 20px;
-    }
-  }
+.logo-img {
+  display: block;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
 }
 
 .links {
@@ -57,7 +44,7 @@
 }
 
 .ativo {
-  background: #ffede6;
+  background: var(--uf-fundo-laranja);
   color: var(--uf-vermelho);
 }
 
@@ -76,9 +63,9 @@
   align-items: center;
   justify-content: center;
   gap: 8px 24px;
-  padding: 24px 16px;
-  background: var(--uf-texto);
-  color: #fff3e8;
+  padding: 28px 16px;
+  background: var(--uf-vermelho-escuro);
+  color: #ffe9d8;
   font-size: 0.9rem;
   text-align: center;
 }
