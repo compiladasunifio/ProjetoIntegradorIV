@@ -13,6 +13,7 @@ export class Home implements OnInit {
 
   destaques = signal<Produto[]>([]);
 
+
   beneficios = [
     { icone: 'storefront', titulo: 'Vendedores da faculdade', texto: 'Alunos que empreendem dentro do campus.' },
     { icone: 'location_on', titulo: 'Fácil de encontrar', texto: 'Cada vendedor informa onde está na faculdade.' },

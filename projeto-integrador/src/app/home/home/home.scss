@@ -259,3 +259,32 @@
   h2 { color: #fff; }
   p { opacity: 0.95; }
 }
+
+.campus {
+  h2 { margin-bottom: 8px; }
+
+  .campus-texto {
+    margin: 0 0 20px;
+    opacity: 0.8;
+  }
+}
+
+.campus-foto {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(46, 30, 23, 0.15);
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    opacity: 0.65;
+  }
+}
