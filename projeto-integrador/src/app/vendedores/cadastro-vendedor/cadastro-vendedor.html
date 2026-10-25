@@ -60,14 +60,11 @@
           <mat-error>Informe onde encontrar você.</mat-error>
         </mat-form-field>
 
-        @if (mensagem()) {
-          <p role="status">{{ mensagem() }}</p>
-        }
       </mat-card-content>
 
       <mat-card-actions align="end">
         <button mat-button type="button" (click)="limpar(form)">Limpar</button>
-        <button mat-flat-button type="submit">Cadastrar</button>
+        <button mat-flat-button type="submit" [disabled]="salvando()">Cadastrar</button>
         <a mat-button routerLink="/vendedores/login">Já tenho uma conta</a>
       </mat-card-actions>
     </form>

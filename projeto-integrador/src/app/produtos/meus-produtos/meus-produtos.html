@@ -1,1 +1,30 @@
-<p>meus-produtos works!</p>
+<main class="pagina">
+  <header class="topo">
+    <h1>Meus produtos</h1>
+    <a mat-flat-button routerLink="/produtos/cadastro">Novo produto</a>
+  </header>
+
+  @if (carregando()) {
+    <p>Carregando...</p>
+  } @else {
+    <div class="grade">
+      @for (p of produtos(); track p.id) {
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{ p.nome }}</mat-card-title>
+            <mat-card-subtitle>{{ p.localizacao }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ p.descricao }}</p>
+            <p class="preco">{{ p.preco | currency:'BRL' }}</p>
+            <p [ngClass]="{ 'disponivel': p.disponivel, 'indisponivel': !p.disponivel }">
+              {{ p.disponivel ? 'Disponível' : 'Indisponível' }}
+            </p>
+          </mat-card-content>
+        </mat-card>
+      } @empty {
+        <p>Você ainda não cadastrou nenhum produto.</p>
+      }
+    </div>
+  }
+</main>

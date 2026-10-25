@@ -34,7 +34,7 @@
 
       <mat-card-actions align="end">
         <a mat-button routerLink="/vendedores/cadastro">Criar conta</a>
-        <button mat-flat-button type="submit">Entrar</button>
+        <button mat-flat-button type="submit" [disabled]="entrando()">Entrar</button>
       </mat-card-actions>
     </form>
   </mat-card>

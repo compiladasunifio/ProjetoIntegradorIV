@@ -1,0 +1,24 @@
+.pagina {
+  max-width: 960px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+.topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.preco { font-weight: 600; }
+.disponivel { color: green; }
+.indisponivel { color: red; }

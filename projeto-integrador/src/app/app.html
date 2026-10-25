@@ -1,1 +1,26 @@
+<mat-toolbar class="barra">
+  <a class="marca" routerLink="/">UniFood</a>
+
+  <nav class="links">
+    <a mat-button routerLink="/" routerLinkActive="ativo"
+       [routerLinkActiveOptions]="{ exact: true }">Início</a>
+    <a mat-button routerLink="/catalogo" routerLinkActive="ativo">Catálogo</a>
+
+    @if (auth.logado()) {
+      <a mat-button routerLink="/produtos/meus-produtos" routerLinkActive="ativo">Meus produtos</a>
+      <a mat-button routerLink="/produtos/cadastro" routerLinkActive="ativo">Novo produto</a>
+    }
+  </nav>
+
+  <span class="espaco"></span>
+
+  @if (auth.logado()) {
+    <span class="usuario">Olá, {{ auth.vendedor()?.nome }}</span>
+    <button mat-button type="button" (click)="sair()">Sair</button>
+  } @else {
+    <a mat-button routerLink="/vendedores/login">Entrar como vendedor</a>
+    <a mat-flat-button routerLink="/vendedores/cadastro">Quero vender</a>
+  }
+</mat-toolbar>
+
 <router-outlet></router-outlet>

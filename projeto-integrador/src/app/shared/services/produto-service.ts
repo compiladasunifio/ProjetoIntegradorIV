@@ -21,4 +21,8 @@ export class ProdutoService {
     this.produtos.push(novo);
     return of(novo).pipe(delay(400));
   }
+
+  listarPorVendedor(vendedorId: number): Observable<Produto[]> {
+  return of(this.produtos.filter(p => p.vendedorId === vendedorId)).pipe(delay(300));
+}
 }

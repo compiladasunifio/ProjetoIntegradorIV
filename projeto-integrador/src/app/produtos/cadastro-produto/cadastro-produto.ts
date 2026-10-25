@@ -1,15 +1,19 @@
 import { Component, inject, signal } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ProdutoService } from '../../shared/services/produto-service';
+import { AuthService } from '../../shared/services/auth-service';
+
 
 @Component({
   selector: 'app-cadastro-produto',
   standalone: false,
   templateUrl: './cadastro-produto.html',
   styleUrl: './cadastro-produto.scss',
+  
 })
 export class CadastroProduto {
   private produtoService = inject(ProdutoService);
+  private auth = inject(AuthService);
 
   produto = this.novoProduto();
   mensagem = signal('');
@@ -29,7 +33,7 @@ export class CadastroProduto {
         imagemUrl: this.produto.imagemUrl.trim(),
         disponivel: this.produto.disponivel,
         localizacao: this.produto.localizacao.trim(),
-        vendedorId: 1, // PROVISÓRIO: virá do vendedor logado
+        vendedorId: this.auth.vendedor()!.id,
       })
       .subscribe(salvo => {
         this.salvando.set(false);

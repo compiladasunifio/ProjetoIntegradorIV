@@ -1,5 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../shared/services/auth-service';
 
 @Component({
   selector: 'app-cadastro-vendedor',
@@ -8,18 +10,26 @@ import { NgForm } from '@angular/forms';
   styleUrl: './cadastro-vendedor.scss',
 })
 export class CadastroVendedor {
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
   vendedor = this.novoVendedor();
-  mensagem = signal('');
+  salvando = signal(false);
 
   salvar(form: NgForm): void {
-    if (form.invalid) return;
-    // SIMULAÇÃO: ainda não há gravação. Aqui entrará a chamada ao serviço.
-    this.mensagem.set(`Cadastro de "${this.vendedor.nome.trim()}" validado (simulação, sem gravação).`);
+    if (form.invalid || this.salvando()) return;
+
+    this.salvando.set(true);
+    const { senha, ...dados } = this.vendedor; // a senha não entra no modelo do vendedor
+
+    this.auth.cadastrar(dados).subscribe(() => {
+      this.salvando.set(false);
+      this.router.navigateByUrl('/produtos/meus-produtos');
+    });
   }
 
   limpar(form: NgForm): void {
     form.resetForm(this.novoVendedor());
-    this.mensagem.set('');
   }
 
   private novoVendedor() {

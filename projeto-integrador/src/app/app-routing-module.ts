@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { authGuard } from './shared/guards/auth-guard'
 
 const routes: Routes = [
   { path: '', redirectTo: 'catalogo', pathMatch: 'full' },
@@ -14,6 +15,10 @@ const routes: Routes = [
   {
     path: 'vendedores',
     loadChildren: () => import('./vendedores/vendedores-module').then(m => m.VendedoresModule)
+  },
+  {
+    path: 'menu',
+    loadChildren: () => import('./home/home-module').then(m => m.HomeModule),
   }
 ];
 
