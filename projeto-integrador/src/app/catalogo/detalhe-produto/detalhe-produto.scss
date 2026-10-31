@@ -1,0 +1,92 @@
+.pagina {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.voltar { margin-bottom: 16px; }
+
+.detalhe {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+
+  @media (max-width: 760px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.foto {
+  width: 100%;
+  min-height: 280px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.sem-imagem {
+  display: grid;
+  place-items: center;
+  height: 320px;
+  background: linear-gradient(135deg, var(--uf-laranja), var(--uf-vermelho));
+  color: #fff;
+
+  mat-icon { width: 72px; height: 72px; font-size: 72px; }
+}
+
+mat-card-content { padding: 24px; }
+
+h1 { margin: 12px 0 4px; font-size: 1.8rem; }
+
+.preco {
+  margin: 0 0 12px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--uf-vermelho);
+}
+
+.descricao { line-height: 1.6; }
+
+.info {
+  margin: 16px 0 24px;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  mat-icon { color: var(--uf-laranja); }
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #e5f5ec;
+  color: var(--uf-verde);
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  &.indisponivel { background: #fde8e8; color: var(--uf-vermelho); }
+}
+
+.whatsapp {
+  --mat-button-filled-container-color: #1fa855;
+  --mat-button-filled-label-text-color: #fff;
+}
+
+.sem-contato { opacity: 0.7; }
+
+.vazio {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 48px 16px;
+  text-align: center;
+
+  mat-icon { width: 48px; height: 48px; font-size: 48px; color: var(--uf-laranja); }
+}

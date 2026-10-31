@@ -21,3 +21,35 @@ mat-card-actions {
   gap: 8px;
   padding: 16px;
 }
+
+.foto-campo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.previa {
+  width: 100%;
+  max-width: 320px;
+  max-height: 240px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid var(--uf-borda);
+}
+
+.foto-acoes {
+  display: flex;
+  gap: 8px;
+}
+
+.dica {
+  font-size: 0.8rem;
+  opacity: 0.65;
+}
+
+.erro {
+  margin: 0;
+  color: var(--uf-vermelho);
+  font-weight: 500;
+}

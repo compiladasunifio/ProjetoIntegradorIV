@@ -7,6 +7,10 @@
 
     <form #form="ngForm" (ngSubmit)="entrar(form)" novalidate>
       <mat-card-content>
+        @if (aviso()) {
+          <p class="aviso" role="status">{{ aviso() }}</p>
+        }
+
         <mat-form-field appearance="outline">
           <mat-label>E-mail</mat-label>
           <input matInput type="email" name="email" required email
@@ -28,13 +32,15 @@
         </mat-form-field>
 
         @if (mensagem()) {
-          <p role="status">{{ mensagem() }}</p>
+          <p class="erro" role="alert">{{ mensagem() }}</p>
         }
       </mat-card-content>
 
       <mat-card-actions align="end">
         <a mat-button routerLink="/vendedores/cadastro">Criar conta</a>
-        <button mat-flat-button type="submit" [disabled]="entrando()">Entrar</button>
+        <button mat-flat-button type="submit" [disabled]="entrando()">
+          {{ entrando() ? 'Entrando...' : 'Entrar' }}
+        </button>
       </mat-card-actions>
     </form>
   </mat-card>

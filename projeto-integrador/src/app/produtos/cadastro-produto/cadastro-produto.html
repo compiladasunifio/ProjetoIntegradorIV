@@ -31,11 +31,28 @@
           }
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Link da imagem (opcional)</mat-label>
-          <input matInput type="url" name="imagemUrl" [(ngModel)]="produto.imagemUrl">
-          <mat-hint>Endereço de uma imagem do produto</mat-hint>
-        </mat-form-field>
+                <div class="foto-campo">
+          <input #arquivo type="file" hidden
+                 accept="image/png,image/jpeg,image/webp"
+                 (change)="escolherFoto($event)">
+
+          @if (previa()) {
+            <img class="previa" [src]="previa()" alt="Prévia da foto do produto">
+            <div class="foto-acoes">
+              <button mat-button type="button" (click)="arquivo.click()">Trocar foto</button>
+              <button mat-button type="button" (click)="removerFoto()">Remover</button>
+            </div>
+          } @else {
+            <button mat-stroked-button type="button" (click)="arquivo.click()">
+              <mat-icon>add_a_photo</mat-icon> Adicionar foto (opcional)
+            </button>
+            <span class="dica">JPG, PNG ou WebP, até 5 MB</span>
+          }
+
+          @if (erroImagem()) {
+            <p class="erro" role="alert">{{ erroImagem() }}</p>
+          }
+        </div>
 
         <mat-form-field appearance="outline">
           <mat-label>Onde encontrar na faculdade</mat-label>

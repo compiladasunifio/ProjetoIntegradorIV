@@ -21,3 +21,18 @@ mat-card-actions {
   gap: 8px;
   padding: 16px;
 }
+
+.aviso {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #e5f5ec;
+  color: var(--uf-verde);
+  font-weight: 500;
+}
+
+.erro {
+  margin: 0;
+  color: var(--uf-vermelho);
+  font-weight: 500;
+}

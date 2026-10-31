@@ -15,21 +15,28 @@ export class CadastroVendedor {
 
   vendedor = this.novoVendedor();
   salvando = signal(false);
+  erro = signal('');
 
   salvar(form: NgForm): void {
     if (form.invalid || this.salvando()) return;
 
     this.salvando.set(true);
+    this.erro.set('');
     const { senha, ...dados } = this.vendedor; // a senha não entra no modelo do vendedor
 
-    this.auth.cadastrar(dados).subscribe(() => {
+    this.auth.cadastrar(dados).subscribe(criada => {
       this.salvando.set(false);
-      this.router.navigateByUrl('/produtos/meus-produtos');
+      if (!criada) {
+        this.erro.set('Já existe uma conta com esse e-mail. Tente entrar.');
+        return;
+      }
+      this.router.navigate(['/vendedores/login'], { queryParams: { cadastro: 'ok' } });
     });
   }
 
   limpar(form: NgForm): void {
     form.resetForm(this.novoVendedor());
+    this.erro.set('');
   }
 
   private novoVendedor() {

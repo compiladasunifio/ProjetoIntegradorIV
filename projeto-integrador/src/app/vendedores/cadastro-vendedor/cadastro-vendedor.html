@@ -59,7 +59,9 @@
           <mat-hint>Ex.: bloco 1</mat-hint>
           <mat-error>Informe onde encontrar você.</mat-error>
         </mat-form-field>
-
+                @if (erro()) {
+          <p class="erro" role="alert">{{ erro() }}</p>
+        }
       </mat-card-content>
 
       <mat-card-actions align="end">

@@ -10,6 +10,9 @@
     <div class="grade">
       @for (p of produtos(); track p.id) {
         <mat-card appearance="outlined">
+                    @if (p.imagemUrl) {
+            <img class="foto" [src]="p.imagemUrl" [alt]="p.nome">
+          }
           <mat-card-header>
             <mat-card-title>{{ p.nome }}</mat-card-title>
             <mat-card-subtitle>{{ p.localizacao }}</mat-card-subtitle>

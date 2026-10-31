@@ -7,4 +7,6 @@ export interface Produto {
   disponivel: boolean;
   localizacao: string;
   vendedorId: number;
+  vendedorNome?: string;
+  vendedorTelefone?: string;
 }

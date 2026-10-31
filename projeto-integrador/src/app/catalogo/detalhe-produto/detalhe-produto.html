@@ -1,1 +1,49 @@
-<p>detalhe-produto works!</p>
+<main class="pagina">
+  <a mat-button routerLink="/catalogo" class="voltar">
+    <mat-icon>arrow_back</mat-icon> Voltar ao catálogo
+  </a>
+
+  @if (carregando()) {
+    <p>Carregando...</p>
+  } @else {
+    @if (produto(); as p) {
+      <div class="detalhe">
+        @if (p.imagemUrl) {
+          <img class="foto" [src]="p.imagemUrl" [alt]="p.nome">
+        } @else {
+          <div class="foto sem-imagem"><mat-icon>restaurant</mat-icon></div>
+        }
+
+        <mat-card appearance="outlined">
+          <mat-card-content>
+            <span class="status" [class.indisponivel]="!p.disponivel">
+              {{ p.disponivel ? 'Disponível' : 'Indisponível' }}
+            </span>
+            <h1>{{ p.nome }}</h1>
+            <p class="preco">{{ p.preco | currency:'BRL' }}</p>
+            <p class="descricao">{{ p.descricao }}</p>
+
+            <ul class="info">
+              <li><mat-icon>storefront</mat-icon> {{ p.vendedorNome || 'Vendedor da faculdade' }}</li>
+              <li><mat-icon>location_on</mat-icon> {{ p.localizacao }}</li>
+            </ul>
+
+            @if (p.vendedorTelefone) {
+              <a mat-flat-button class="whatsapp" [href]="linkWhatsapp(p)" target="_blank" rel="noopener">
+                <mat-icon>chat</mat-icon> Chamar o vendedor no WhatsApp
+              </a>
+            } @else {
+              <p class="sem-contato">O vendedor ainda não informou um contato.</p>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+    } @else {
+      <div class="vazio">
+        <mat-icon>search_off</mat-icon>
+        <p>Produto não encontrado.</p>
+        <a mat-flat-button routerLink="/catalogo">Ver catálogo</a>
+      </div>
+    }
+  }
+</main>

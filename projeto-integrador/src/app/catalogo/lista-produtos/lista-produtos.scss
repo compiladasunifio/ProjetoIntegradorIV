@@ -1,0 +1,112 @@
+.topo {
+  padding: 40px 16px;
+  background: linear-gradient(135deg, var(--uf-vermelho), var(--uf-laranja));
+  color: #fff;
+}
+
+.topo-conteudo {
+  max-width: 1040px;
+  margin: 0 auto;
+
+  h1 { margin: 0 0 8px; font-size: 2rem; }
+  p { margin: 0; opacity: 0.95; }
+}
+
+.pagina {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.contagem {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.produto {
+  overflow: hidden;
+
+  .foto {
+    display: block;
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+  }
+
+  .sem-imagem {
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, var(--uf-laranja), var(--uf-vermelho));
+    color: #fff;
+
+    mat-icon { width: 48px; height: 48px; font-size: 48px; }
+  }
+
+  h3 { margin: 12px 0 2px; }
+
+  .vendedor {
+    margin: 0 0 6px;
+    font-size: 0.85rem;
+    color: var(--uf-vermelho);
+    font-weight: 500;
+  }
+
+  .local {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.75;
+
+    mat-icon { width: 18px; height: 18px; font-size: 18px; }
+  }
+
+  .rodape-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+
+  .preco { font-size: 1.1rem; font-weight: 700; color: var(--uf-vermelho); }
+
+  .status {
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #e5f5ec;
+    color: var(--uf-verde);
+    font-size: 0.8rem;
+    font-weight: 600;
+
+    &.indisponivel { background: #fde8e8; color: var(--uf-vermelho); }
+  }
+
+  mat-card-actions { padding: 8px 16px 16px; }
+}
+
+.vazio {
+  grid-column: 1 / -1;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 40px 16px;
+  text-align: center;
+
+  mat-icon { width: 48px; height: 48px; font-size: 48px; color: var(--uf-laranja); }
+}

@@ -22,3 +22,10 @@
 .preco { font-weight: 600; }
 .disponivel { color: green; }
 .indisponivel { color: red; }
+
+.foto {
+  display: block;
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
