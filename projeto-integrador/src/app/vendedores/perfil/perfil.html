@@ -1,1 +1,93 @@
-<p>perfil works!</p>
+<main class="pagina">
+  @if (auth.vendedor(); as v) {
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Meu perfil</mat-card-title>
+        <mat-card-subtitle>Dados exibidos para quem se interessar pelos seus produtos</mat-card-subtitle>
+      </mat-card-header>
+
+      @if (!editando()) {
+        <mat-card-content>
+          @if (mensagem()) {
+            <p class="aviso" role="status">{{ mensagem() }}</p>
+          }
+          <dl class="dados">
+            <dt>Nome</dt><dd>{{ v.nome }}</dd>
+            <dt>E-mail</dt><dd>{{ v.email }}</dd>
+            <dt>WhatsApp / telefone</dt><dd>{{ v.telefone }}</dd>
+            <dt>Nome do negócio</dt><dd>{{ v.nomeNegocio }}</dd>
+            <dt>Localização</dt><dd>{{ v.localizacao }}</dd>
+          </dl>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+          <button mat-button type="button" class="excluir" [disabled]="excluindo()"
+                  (click)="excluirConta()">
+            <mat-icon>delete</mat-icon> {{ excluindo() ? 'Excluindo...' : 'Excluir conta' }}
+          </button>
+          <a mat-button routerLink="/produtos/meus-produtos">Meus produtos</a>
+          <button mat-flat-button type="button" (click)="editar()">
+            <mat-icon>edit</mat-icon> Editar perfil
+          </button>
+        </mat-card-actions>
+      } @else {
+        <form #form="ngForm" (ngSubmit)="salvar(form)" novalidate>
+          <mat-card-content>
+            <mat-form-field appearance="outline">
+              <mat-label>Nome completo</mat-label>
+              <input matInput name="nome" required [(ngModel)]="dados.nome">
+              <mat-error>Informe seu nome.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>E-mail</mat-label>
+              <input matInput type="email" name="email" required email
+                     #email="ngModel" [(ngModel)]="dados.email">
+              @if (email.hasError('required')) {
+                <mat-error>Informe seu e-mail.</mat-error>
+              } @else {
+                <mat-error>E-mail inválido.</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>WhatsApp / telefone</mat-label>
+              <input matInput type="tel" name="telefone" required pattern="[0-9]{10,11}"
+                     #telefone="ngModel" [(ngModel)]="dados.telefone">
+              <mat-hint>Somente números, com DDD</mat-hint>
+              @if (telefone.hasError('required')) {
+                <mat-error>Informe um contato.</mat-error>
+              } @else {
+                <mat-error>Use 10 ou 11 dígitos.</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nome do negócio</mat-label>
+              <input matInput name="nomeNegocio" required [(ngModel)]="dados.nomeNegocio">
+              <mat-error>Informe o nome do seu negócio.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Localização na faculdade</mat-label>
+              <input matInput name="localizacao" required [(ngModel)]="dados.localizacao">
+              <mat-hint>Ex.: bloco 1</mat-hint>
+              <mat-error>Informe onde encontrar você.</mat-error>
+            </mat-form-field>
+
+            @if (erro()) {
+              <p class="erro" role="alert">{{ erro() }}</p>
+            }
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+            <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+            <button mat-flat-button type="submit" [disabled]="salvando()">
+              {{ salvando() ? 'Salvando...' : 'Salvar alterações' }}
+            </button>
+          </mat-card-actions>
+        </form>
+      }
+    </mat-card>
+  }
+</main>

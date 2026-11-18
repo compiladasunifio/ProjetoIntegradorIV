@@ -1,7 +1,16 @@
 <main class="pagina">
+  @if (carregando()) {
+    <p>Carregando...</p>
+  } @else if (naoEncontrado()) {
+    <div class="vazio">
+      <mat-icon>search_off</mat-icon>
+      <p>Produto não encontrado entre os seus produtos.</p>
+      <a mat-flat-button routerLink="/produtos/meus-produtos">Voltar para meus produtos</a>
+    </div>
+  } @else {
   <mat-card appearance="outlined">
     <mat-card-header>
-      <mat-card-title>Cadastrar produto</mat-card-title>
+      <mat-card-title>{{ idEdicao() !== null ? 'Editar produto' : 'Cadastrar produto' }}</mat-card-title>
       <mat-card-subtitle>Divulgue seu produto para a comunidade Unifio</mat-card-subtitle>
     </mat-card-header>
 
@@ -71,11 +80,19 @@
       </mat-card-content>
 
       <mat-card-actions align="end">
-        <button mat-button type="button" (click)="limpar(form)">Limpar</button>
-        <button mat-flat-button type="submit" [disabled]="salvando()">
-          {{ salvando() ? 'Salvando...' : 'Cadastrar produto' }}
-        </button>
+        @if (idEdicao() !== null) {
+          <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+          <button mat-flat-button type="submit" [disabled]="salvando()">
+            {{ salvando() ? 'Salvando...' : 'Salvar alterações' }}
+          </button>
+        } @else {
+          <button mat-button type="button" (click)="limpar(form)">Limpar</button>
+          <button mat-flat-button type="submit" [disabled]="salvando()">
+            {{ salvando() ? 'Salvando...' : 'Cadastrar produto' }}
+          </button>
+        }
       </mat-card-actions>
     </form>
   </mat-card>
+  }
 </main>

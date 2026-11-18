@@ -17,7 +17,9 @@
   <span class="espaco"></span>
 
   @if (auth.logado()) {
-    <span class="usuario">Olá, {{ auth.vendedor()?.nome }}</span>
+    <a mat-button class="usuario" routerLink="/vendedores/perfil" routerLinkActive="ativo">
+      Olá, {{ auth.vendedor()?.nome }}
+    </a>
     <button mat-button type="button" (click)="sair()">Sair</button>
   } @else {
     <a mat-button routerLink="/vendedores/login">Entrar</a>

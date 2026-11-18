@@ -4,13 +4,17 @@
     <a mat-flat-button routerLink="/produtos/cadastro">Novo produto</a>
   </header>
 
+  @if (mensagem()) {
+    <p class="mensagem" role="status">{{ mensagem() }}</p>
+  }
+
   @if (carregando()) {
     <p>Carregando...</p>
   } @else {
     <div class="grade">
       @for (p of produtos(); track p.id) {
         <mat-card appearance="outlined">
-                    @if (p.imagemUrl) {
+          @if (p.imagemUrl) {
             <img class="foto" [src]="p.imagemUrl" [alt]="p.nome">
           }
           <mat-card-header>
@@ -20,10 +24,23 @@
           <mat-card-content>
             <p>{{ p.descricao }}</p>
             <p class="preco">{{ p.preco | currency:'BRL' }}</p>
-            <p [ngClass]="{ 'disponivel': p.disponivel, 'indisponivel': !p.disponivel }">
-              {{ p.disponivel ? 'Disponível' : 'Indisponível' }}
-            </p>
+            <mat-slide-toggle [checked]="p.disponivel" [disabled]="ocupado(p.id)"
+                              (change)="alternarDisponivel(p, $event.checked)">
+              <span [ngClass]="{ 'disponivel': p.disponivel, 'indisponivel': !p.disponivel }">
+                {{ p.disponivel ? 'Disponível' : 'Indisponível' }}
+              </span>
+            </mat-slide-toggle>
           </mat-card-content>
+          <mat-card-actions align="end">
+            <a mat-button [routerLink]="['/catalogo/produto', p.id]">Ver</a>
+            <a mat-button [routerLink]="['/produtos/editar', p.id]">
+              <mat-icon>edit</mat-icon> Editar
+            </a>
+            <button mat-button type="button" class="excluir" [disabled]="ocupado(p.id)"
+                    (click)="excluir(p)">
+              <mat-icon>delete</mat-icon> Excluir
+            </button>
+          </mat-card-actions>
         </mat-card>
       } @empty {
         <p>Você ainda não cadastrou nenhum produto.</p>

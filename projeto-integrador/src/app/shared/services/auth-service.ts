@@ -47,6 +47,34 @@ export class AuthService {
     return of(nova).pipe(delay(400));
   }
 
+  // UPDATE: altera os dados da conta logada. Devolve null se o novo e-mail já for de outra conta.
+  atualizar(dados: Omit<Vendedor, 'id'>): Observable<Vendedor | null> {
+    const atual = this._vendedor();
+    if (!atual) return of(null).pipe(delay(400));
+
+    const alvo = dados.email.trim().toLowerCase();
+    if (this.contas.some(c => c.id !== atual.id && c.email.toLowerCase() === alvo)) {
+      return of(null).pipe(delay(400));
+    }
+
+    const atualizado: Vendedor = { ...dados, id: atual.id };
+    this.contas = this.contas.map(c => (c.id === atual.id ? atualizado : c));
+    this.salvarContas();
+    this.iniciarSessao(atualizado);
+    return of(atualizado).pipe(delay(400));
+  }
+
+  // DELETE: remove a conta logada e encerra a sessão.
+  excluirConta(): Observable<boolean> {
+    const atual = this._vendedor();
+    if (!atual) return of(false).pipe(delay(400));
+
+    this.contas = this.contas.filter(c => c.id !== atual.id);
+    this.salvarContas();
+    this.logout();
+    return of(true).pipe(delay(400));
+  }
+
   logout(): void {
     this._vendedor.set(null);
     try { sessionStorage.removeItem(CHAVE_SESSAO); } catch {}
@@ -73,11 +101,14 @@ export class AuthService {
 
   private carregarContas(): Vendedor[] {
     let salvas: Vendedor[] = [];
+    let texto: string | null = null;
     try {
-      const texto = sessionStorage.getItem(CHAVE_CONTAS);
+      texto = sessionStorage.getItem(CHAVE_CONTAS);
       salvas = texto ? JSON.parse(texto) : [];
     } catch {}
-    return [CONTA_DEMO, ...salvas.filter(c => c.email !== CONTA_DEMO.email)];
+    // Depois do primeiro salvamento, a lista salva já inclui (ou não, se foi excluída) a conta de teste.
+    if (texto !== null) return salvas;
+    return [CONTA_DEMO];
   }
 
   private salvarContas(): void {
