@@ -35,7 +35,8 @@ export class Login implements OnInit {
       this.entrando.set(false);
       if (!vendedor) {
         this.aviso.set('');
-        this.mensagem.set('Não encontramos uma conta com esse e-mail. Confira o endereço ou crie uma conta.');
+        // Mensagem única: não revela se o e-mail existe ou se só a senha está errada.
+        this.mensagem.set('E-mail ou senha incorretos.');
         return;
       }
       this.router.navigateByUrl('/produtos/meus-produtos');
