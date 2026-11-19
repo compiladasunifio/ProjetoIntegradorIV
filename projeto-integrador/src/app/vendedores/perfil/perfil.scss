@@ -1,0 +1,73 @@
+.pagina {
+  max-width: 720px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 24px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px;
+}
+
+.dados {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 24px;
+  margin: 0;
+
+  dt {
+    font-weight: 600;
+  }
+
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 480px) {
+  .dados {
+    grid-template-columns: 1fr;
+    gap: 2px;
+
+    dd {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.aviso {
+  margin: 0;
+  color: var(--uf-verde);
+  font-weight: 500;
+}
+
+.erro {
+  margin: 0;
+  color: var(--uf-vermelho);
+  font-weight: 500;
+}
+
+.excluir {
+  color: var(--uf-vermelho);
+  margin-right: auto;
+}
+
+.secao {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}

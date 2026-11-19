@@ -4,8 +4,9 @@ import { CadastroProduto } from './cadastro-produto/cadastro-produto';
 import { MeusProdutos } from './meus-produtos/meus-produtos';
 
 const routes: Routes = [
-  {path: 'cadastro', component: CadastroProduto},
-  {path: 'meus-produtos', component: MeusProdutos},
+  { path: 'cadastro', component: CadastroProduto },
+  { path: 'editar/:id', component: CadastroProduto },
+  { path: 'meus-produtos', component: MeusProdutos },
 ];
 
 @NgModule({

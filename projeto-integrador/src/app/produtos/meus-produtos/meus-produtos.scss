@@ -29,3 +29,26 @@
   height: 160px;
   object-fit: cover;
 }
+.mensagem {
+  margin: 0 0 16px;
+  font-weight: 500;
+}
+
+mat-card {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card-content {
+  flex: 1;
+}
+
+mat-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.excluir {
+  color: var(--uf-vermelho);
+}

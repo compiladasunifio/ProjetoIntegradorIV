@@ -22,9 +22,9 @@ export class CadastroVendedor {
 
     this.salvando.set(true);
     this.erro.set('');
-    const { senha, ...dados } = this.vendedor; // a senha não entra no modelo do vendedor
+    const { senha, ...dados } = this.vendedor; // a senha vai separada: só o hash dela é guardado
 
-    this.auth.cadastrar(dados).subscribe(criada => {
+    this.auth.cadastrar(dados, senha).subscribe(criada => {
       this.salvando.set(false);
       if (!criada) {
         this.erro.set('Já existe uma conta com esse e-mail. Tente entrar.');
