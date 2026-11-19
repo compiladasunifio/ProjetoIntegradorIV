@@ -87,6 +87,27 @@ export class AuthService {
     return of(vendedor).pipe(delay(400));
   }
 
+  // Troca a senha da conta logada. Devolve false se a senha atual estiver errada.
+  alterarSenha(senhaAtual: string, novaSenha: string): Observable<boolean> {
+    const atual = this._vendedor();
+    const conta = atual && this.contas.find(c => c.id === atual.id);
+    if (!conta) return of(false).pipe(delay(400));
+
+    return from(this.trocarHash(conta, senhaAtual, novaSenha)).pipe(delay(400));
+  }
+
+  private async trocarHash(conta: Conta, senhaAtual: string, novaSenha: string): Promise<boolean> {
+    if (!conta.senhaHash || (await gerarHash(conta.sal, senhaAtual)) !== conta.senhaHash) {
+      return false;
+    }
+    // Um sal novo a cada troca de senha.
+    const sal = gerarSal();
+    const senhaHash = await gerarHash(sal, novaSenha);
+    this.contas = this.contas.map(c => (c.id === conta.id ? { ...c, sal, senhaHash } : c));
+    this.salvarContas();
+    return true;
+  }
+
   // DELETE: remove a conta logada e encerra a sessão.
   excluirConta(): Observable<boolean> {
     const atual = this._vendedor();

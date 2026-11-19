@@ -6,7 +6,49 @@
         <mat-card-subtitle>Dados exibidos para quem se interessar pelos seus produtos</mat-card-subtitle>
       </mat-card-header>
 
-      @if (!editando()) {
+      @if (trocandoSenha()) {
+        <form #formSenha="ngForm" (ngSubmit)="salvarSenha(formSenha)" novalidate>
+          <mat-card-content>
+            <h2 class="secao">Alterar senha</h2>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Senha atual</mat-label>
+              <input matInput type="password" name="atual" required
+                     autocomplete="current-password" [(ngModel)]="senhas.atual">
+              <mat-error>Informe a sua senha atual.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nova senha</mat-label>
+              <input matInput type="password" name="nova" required minlength="6"
+                     autocomplete="new-password" #nova="ngModel" [(ngModel)]="senhas.nova">
+              @if (nova.hasError('required')) {
+                <mat-error>Informe a nova senha.</mat-error>
+              } @else {
+                <mat-error>A senha deve ter pelo menos 6 caracteres.</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Confirme a nova senha</mat-label>
+              <input matInput type="password" name="confirmacao" required
+                     autocomplete="new-password" [(ngModel)]="senhas.confirmacao">
+              <mat-error>Repita a nova senha.</mat-error>
+            </mat-form-field>
+
+            @if (erroSenha()) {
+              <p class="erro" role="alert">{{ erroSenha() }}</p>
+            }
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+            <button mat-button type="button" (click)="cancelarTrocaSenha()">Cancelar</button>
+            <button mat-flat-button type="submit" [disabled]="salvandoSenha()">
+              {{ salvandoSenha() ? 'Salvando...' : 'Alterar senha' }}
+            </button>
+          </mat-card-actions>
+        </form>
+      } @else if (!editando()) {
         <mat-card-content>
           @if (mensagem()) {
             <p class="aviso" role="status">{{ mensagem() }}</p>
@@ -25,7 +67,9 @@
                   (click)="excluirConta()">
             <mat-icon>delete</mat-icon> {{ excluindo() ? 'Excluindo...' : 'Excluir conta' }}
           </button>
-          <a mat-button routerLink="/produtos/meus-produtos">Meus produtos</a>
+          <button mat-button type="button" (click)="abrirTrocaSenha()">
+            <mat-icon>lock</mat-icon> Alterar senha
+          </button>
           <button mat-flat-button type="button" (click)="editar()">
             <mat-icon>edit</mat-icon> Editar perfil
           </button>

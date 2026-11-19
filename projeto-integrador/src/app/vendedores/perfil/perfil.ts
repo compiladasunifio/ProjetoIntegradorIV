@@ -27,10 +27,17 @@ export class Perfil {
 
   dados: DadosVendedor = this.copiarDoPerfil();
 
+  // Troca de senha
+  trocandoSenha = signal(false);
+  salvandoSenha = signal(false);
+  erroSenha = signal('');
+  senhas = this.senhasVazias();
+
   editar(): void {
     this.dados = this.copiarDoPerfil();
     this.mensagem.set('');
     this.erro.set('');
+    this.trocandoSenha.set(false);
     this.editando.set(true);
   }
 
@@ -66,6 +73,46 @@ export class Perfil {
     });
   }
 
+  abrirTrocaSenha(): void {
+    this.senhas = this.senhasVazias();
+    this.mensagem.set('');
+    this.erroSenha.set('');
+    this.trocandoSenha.set(true);
+  }
+
+  cancelarTrocaSenha(): void {
+    this.erroSenha.set('');
+    this.trocandoSenha.set(false);
+  }
+
+  salvarSenha(form: NgForm): void {
+    if (form.invalid || this.salvandoSenha()) return;
+
+    const { atual, nova, confirmacao } = this.senhas;
+    if (nova !== confirmacao) {
+      this.erroSenha.set('A confirmação não é igual à nova senha.');
+      return;
+    }
+    if (nova === atual) {
+      this.erroSenha.set('A nova senha deve ser diferente da atual.');
+      return;
+    }
+
+    this.salvandoSenha.set(true);
+    this.erroSenha.set('');
+
+    this.auth.alterarSenha(atual, nova).subscribe(ok => {
+      this.salvandoSenha.set(false);
+      if (!ok) {
+        this.erroSenha.set('A senha atual está incorreta.');
+        return;
+      }
+      this.trocandoSenha.set(false);
+      this.senhas = this.senhasVazias();
+      this.mensagem.set('Senha alterada. Use a nova senha no próximo login.');
+    });
+  }
+
   excluirConta(): void {
     const vendedor = this.auth.vendedor();
     if (!vendedor || this.excluindo()) return;
@@ -81,6 +128,10 @@ export class Perfil {
         this.excluindo.set(false);
         this.router.navigateByUrl('/');
       });
+  }
+
+  private senhasVazias() {
+    return { atual: '', nova: '', confirmacao: '' };
   }
 
   private copiarDoPerfil(): DadosVendedor {
