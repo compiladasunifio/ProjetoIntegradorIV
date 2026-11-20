@@ -2,8 +2,10 @@
 
 O sistema tem 4 entidades: **Vendedor**, **Produto**, **Avaliação** e **Horário de atendimento**.
 
+![Diagrama de classes](diagrama-de-classes.png)
 
 | Entidade | O que representa | Quem cadastra, edita e exclui |
+|---|---|---|
 | **Vendedor** | Aluno que vende na faculdade. Faz login com e-mail e senha. | O próprio vendedor (tela de cadastro e página Meu perfil) |
 | **Produto** | Item à venda, com preço, foto e se está disponível. | O vendedor dono do produto (Novo produto e Meus produtos) |
 | **Avaliacao** | Nota de 1 a 5 e comentário deixados por um visitante sobre um produto. | O visitante que escreveu a avaliação (página do produto) |
