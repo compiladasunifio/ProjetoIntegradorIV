@@ -1,5 +1,6 @@
 <main class="pagina">
   <h1>Painel</h1>
+  <p class="sub">Resumo do seu negócio no UniFood</p>
 
   @if (carregando()) {
     <p>Carregando...</p>
@@ -7,29 +8,33 @@
     <div class="cartoes">
       <mat-card appearance="outlined">
         <mat-card-content>
+          <span class="titulo"><mat-icon>inventory_2</mat-icon> Produtos</span>
           <span class="numero">{{ produtosDisponiveis() }} de {{ totalProdutos() }}</span>
-          <span>produtos disponíveis</span>
+          <span class="descricao">disponíveis para venda</span>
         </mat-card-content>
       </mat-card>
 
       <mat-card appearance="outlined">
         <mat-card-content>
+          <span class="titulo"><mat-icon>star</mat-icon> Nota média</span>
           <span class="numero">{{ notaMedia() === null ? '-' : (notaMedia() | number:'1.1-1') }}</span>
-          <span>nota média</span>
+          <span class="descricao">de 0 a 5 estrelas</span>
         </mat-card-content>
       </mat-card>
 
       <mat-card appearance="outlined">
         <mat-card-content>
+          <span class="titulo"><mat-icon>reviews</mat-icon> Avaliações</span>
           <span class="numero">{{ totalAvaliacoes() }}</span>
-          <span>avaliações recebidas</span>
+          <span class="descricao">recebidas nos seus produtos</span>
         </mat-card-content>
       </mat-card>
 
       <mat-card appearance="outlined">
         <mat-card-content>
+          <span class="titulo"><mat-icon>schedule</mat-icon> Atendimento</span>
           <span class="numero">{{ horasSemana() | number:'1.0-1' }} h</span>
-          <span>de atendimento por semana</span>
+          <span class="descricao">por semana na faculdade</span>
         </mat-card-content>
       </mat-card>
     </div>
