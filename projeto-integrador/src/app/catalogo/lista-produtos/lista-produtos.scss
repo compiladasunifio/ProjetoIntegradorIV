@@ -18,10 +18,6 @@
   padding: 24px 16px 48px;
 }
 
-.filtro-categoria {
-  width: 200px;
-}
-
 .filtros {
   display: flex;
   flex-wrap: wrap;
@@ -61,17 +57,7 @@
     mat-icon { width: 48px; height: 48px; font-size: 48px; }
   }
 
-  h3 { margin: 4px 0 2px; }
-
-  .categoria {
-    display: inline-block;
-    margin-top: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--uf-laranja);
-  }
+  h3 { margin: 12px 0 2px; }
 
   .nota {
     display: flex;

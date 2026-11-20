@@ -1,0 +1,64 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Horários de atendimento</mat-card-title>
+    <mat-card-subtitle>Quando e onde encontrar você na faculdade</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <ul>
+      @for (h of horarios(); track h.id) {
+        <li>
+          <span><strong>{{ h.dia }}</strong> · {{ h.inicio }} às {{ h.fim }} · {{ h.local }}</span>
+          <span class="acoes">
+            <button mat-button type="button" (click)="editar(h)">Editar</button>
+            <button mat-button type="button" (click)="excluir(h)">Excluir</button>
+          </span>
+        </li>
+      } @empty {
+        <li>Você ainda não cadastrou nenhum horário.</li>
+      }
+    </ul>
+
+    <form (ngSubmit)="salvar()">
+      <p class="titulo">{{ editandoId === null ? 'Novo horário' : 'Editar horário' }}</p>
+
+      <div class="campos">
+        <mat-form-field appearance="outline">
+          <mat-label>Dia</mat-label>
+          <mat-select name="dia" [(ngModel)]="form.dia">
+            @for (d of dias; track d) {
+              <mat-option [value]="d">{{ d }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Início</mat-label>
+          <input matInput type="time" name="inicio" [(ngModel)]="form.inicio">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Fim</mat-label>
+          <input matInput type="time" name="fim" [(ngModel)]="form.fim">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Local</mat-label>
+          <input matInput name="local" [(ngModel)]="form.local">
+          <mat-hint>Ex.: Bloco 2</mat-hint>
+        </mat-form-field>
+      </div>
+
+      @if (mensagem()) {
+        <p>{{ mensagem() }}</p>
+      }
+
+      <div class="botoes">
+        @if (editandoId !== null) {
+          <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+        }
+        <button mat-flat-button type="submit">{{ editandoId === null ? 'Adicionar' : 'Salvar' }}</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,45 @@
+:host {
+  display: block;
+  margin-top: 24px;
+}
+
+ul {
+  margin: 16px 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--uf-borda);
+
+  > span:first-child {
+    flex: 1 1 200px;
+  }
+
+  .acoes {
+    display: flex;
+    margin-left: auto;
+  }
+}
+
+.titulo {
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0 8px;
+}
+
+.botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

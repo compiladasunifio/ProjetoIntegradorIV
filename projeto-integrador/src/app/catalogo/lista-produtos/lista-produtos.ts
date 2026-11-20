@@ -1,10 +1,8 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { Produto } from '../../shared/models/produto';
-import { Categoria } from '../../shared/models/categoria';
 import { Avaliacao } from '../../shared/models/avaliacao';
 import { ProdutoService } from '../../shared/services/produto-service';
-import { CategoriaService } from '../../shared/services/categoria-service';
 import { AvaliacaoService, mediaNotas } from '../../shared/services/avaliacao-service';
 
 export interface ResumoNotas {
@@ -20,21 +18,15 @@ export interface ResumoNotas {
 })
 export class ListaProdutos implements OnInit {
   private produtoService = inject(ProdutoService);
-  private categoriaService = inject(CategoriaService);
   private avaliacaoService = inject(AvaliacaoService);
 
   produtos = signal<Produto[]>([]);
-  categorias = signal<Categoria[]>([]);
   private avaliacoes = signal<Avaliacao[]>([]);
   carregando = signal(true);
   somenteDisponiveis = signal(false);
-  categoriaId = signal<number | null>(null); // null = todas
 
   filtrados = computed(() =>
-    this.produtos().filter(p =>
-      (!this.somenteDisponiveis() || p.disponivel) &&
-      (this.categoriaId() === null || p.categoriaId === this.categoriaId()),
-    ),
+    this.produtos().filter(p => !this.somenteDisponiveis() || p.disponivel),
   );
 
   notas = computed(() => {
@@ -50,11 +42,9 @@ export class ListaProdutos implements OnInit {
   ngOnInit(): void {
     forkJoin({
       produtos: this.produtoService.listar(),
-      categorias: this.categoriaService.listar(),
       avaliacoes: this.avaliacaoService.listar(),
-    }).subscribe(({ produtos, categorias, avaliacoes }) => {
+    }).subscribe(({ produtos, avaliacoes }) => {
       this.produtos.set(produtos);
-      this.categorias.set(categorias);
       this.avaliacoes.set(avaliacoes);
       this.carregando.set(false);
     });
@@ -62,6 +52,5 @@ export class ListaProdutos implements OnInit {
 
   mostrarTodos(): void {
     this.somenteDisponiveis.set(false);
-    this.categoriaId.set(null);
   }
 }
