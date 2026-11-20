@@ -37,12 +37,6 @@ export class ListaProdutos implements OnInit {
     ),
   );
 
-  // Só mostra no filtro as categorias que têm produtos.
-  categoriasComProdutos = computed(() => {
-    const usadas = new Set(this.produtos().map(p => p.categoriaId));
-    return this.categorias().filter(c => usadas.has(c.id));
-  });
-
   notas = computed(() => {
     const porProduto = new Map<number, Avaliacao[]>();
     for (const a of this.avaliacoes()) {
@@ -64,10 +58,6 @@ export class ListaProdutos implements OnInit {
       this.avaliacoes.set(avaliacoes);
       this.carregando.set(false);
     });
-  }
-
-  escolherCategoria(id: number | null): void {
-    this.categoriaId.set(id);
   }
 
   mostrarTodos(): void {

@@ -108,7 +108,7 @@ export class CadastroProduto implements OnInit {
       vendedorNome: vendedor.nomeNegocio || vendedor.nome,
       vendedorTelefone: vendedor.telefone,
       categoriaId: this.produto.categoriaId,
-      categoriaNome: this.categoriaService.obterPorId(this.produto.categoriaId ?? -1)?.nome,
+      categoriaNome: this.categoriaService.buscarNome(this.produto.categoriaId),
     };
 
     this.salvando.set(true);

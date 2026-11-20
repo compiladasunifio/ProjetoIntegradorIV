@@ -44,7 +44,7 @@ export class MeusProdutos implements OnInit {
       .listarPorVendedor(this.auth.vendedor()!.id)
       .pipe(
         tap(lista => this.produtos.set(lista)),
-        switchMap(lista => this.avaliacaoService.listarPorProdutos(lista.map(p => p.id))),
+        switchMap(() => this.avaliacaoService.listar()),
       )
       .subscribe(avaliacoes => {
         this.avaliacoes.set(avaliacoes);

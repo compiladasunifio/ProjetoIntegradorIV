@@ -9,7 +9,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { MatChipsModule } from '@angular/material/chips';
 import { Estrelas } from './components/estrelas/estrelas';
 
 const MATERIAL = [
@@ -21,7 +20,6 @@ const MATERIAL = [
   MatSlideToggleModule,
   MatIconModule,
   MatSelectModule,
-  MatChipsModule,
 ];
 
 @NgModule({
