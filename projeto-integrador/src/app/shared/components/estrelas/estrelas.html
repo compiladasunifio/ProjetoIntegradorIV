@@ -1,0 +1,18 @@
+@if (editavel()) {
+  <div class="estrelas editavel" role="radiogroup" aria-label="Nota">
+    @for (i of posicoes; track i) {
+      <button type="button" class="estrela" role="radio"
+              [attr.aria-checked]="nota() === i"
+              [attr.aria-label]="i + (i === 1 ? ' estrela' : ' estrelas')"
+              (click)="escolher(i)">
+        <mat-icon>{{ icones()[i - 1] }}</mat-icon>
+      </button>
+    }
+  </div>
+} @else {
+  <span class="estrelas" role="img" [attr.aria-label]="'Nota ' + nota() + ' de 5'">
+    @for (i of posicoes; track i) {
+      <mat-icon aria-hidden="true">{{ icones()[i - 1] }}</mat-icon>
+    }
+  </span>
+}

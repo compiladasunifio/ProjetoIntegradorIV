@@ -23,6 +23,19 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
+          <mat-label>Categoria</mat-label>
+          <mat-select name="categoriaId" required [(ngModel)]="produto.categoriaId">
+            @for (c of categorias(); track c.id) {
+              <mat-option [value]="c.id">
+                <span class="opcao"><mat-icon>{{ c.icone }}</mat-icon> {{ c.nome }}</span>
+              </mat-option>
+            }
+          </mat-select>
+          <mat-hint>Não achou? <a routerLink="/categorias">Gerencie as categorias</a></mat-hint>
+          <mat-error>Escolha uma categoria.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
           <mat-label>Descrição</mat-label>
           <textarea matInput name="descricao" rows="4" required
                     [(ngModel)]="produto.descricao"></textarea>

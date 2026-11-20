@@ -1,0 +1,128 @@
+<section class="avaliacoes" aria-labelledby="titulo-avaliacoes">
+  <h2 id="titulo-avaliacoes">Avaliações</h2>
+
+  @if (carregando()) {
+    <p>Carregando...</p>
+  } @else {
+    <div class="topo">
+      <div class="resumo">
+        @if (media() !== null) {
+          <span class="media">{{ media() | number:'1.1-1' }}</span>
+          <app-estrelas [nota]="media() ?? 0" />
+          <span class="total">{{ avaliacoes().length }} {{ avaliacoes().length === 1 ? 'avaliação' : 'avaliações' }}</span>
+        } @else {
+          <mat-icon class="vazio-icone">reviews</mat-icon>
+          <span class="total">Ninguém avaliou ainda. Seja o primeiro!</span>
+        }
+      </div>
+
+      @if (media() !== null) {
+        <ul class="barras" aria-label="Distribuição das notas">
+          @for (d of distribuicao(); track d.nota) {
+            <li>
+              <span>{{ d.nota }}<mat-icon>star</mat-icon></span>
+              <span class="barra"><span [style.width.%]="d.pct"></span></span>
+              <span class="qtd">{{ d.qtd }}</span>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    @if (!ehDono()) {
+      <mat-card appearance="outlined" id="form-avaliacao">
+        <form #f="ngForm" (ngSubmit)="enviar(f)" novalidate>
+          <mat-card-content class="formulario">
+            <h3>{{ editandoId() === null ? 'Avalie este produto' : 'Editar sua avaliação' }}</h3>
+
+            <div class="nota-campo">
+              <span>Sua nota</span>
+              <app-estrelas [editavel]="true" [nota]="form.nota" (notaChange)="escolherNota($event)" />
+              @if (erroNota()) {
+                <span class="erro" role="alert">Escolha uma nota de 1 a 5.</span>
+              }
+            </div>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Seu nome</mat-label>
+              <input matInput name="autorNome" required maxlength="40" [(ngModel)]="form.autorNome">
+              <mat-error>Informe seu nome.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Comentário</mat-label>
+              <textarea matInput name="comentario" rows="3" required maxlength="500"
+                        [(ngModel)]="form.comentario"></textarea>
+              <mat-hint align="end">{{ form.comentario.length }}/500</mat-hint>
+              <mat-error>Conte o que achou do produto.</mat-error>
+            </mat-form-field>
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+            @if (editandoId() !== null) {
+              <button mat-button type="button" (click)="cancelarEdicao()">Cancelar</button>
+            }
+            <button mat-flat-button type="submit" [disabled]="salvando()">
+              {{ salvando() ? 'Enviando...' : editandoId() === null ? 'Publicar avaliação' : 'Salvar alterações' }}
+            </button>
+          </mat-card-actions>
+        </form>
+      </mat-card>
+    } @else {
+      <p class="dono">Este produto é seu: você pode responder ou remover as avaliações abaixo.</p>
+    }
+
+    @if (mensagem()) {
+      <p class="aviso" role="status">{{ mensagem() }}</p>
+    }
+
+    <ul class="lista">
+      @for (a of avaliacoes(); track a.id) {
+        <li class="avaliacao">
+          <div class="cabecalho">
+            <strong>{{ a.autorNome }}</strong>
+            @if (ehMinha(a)) { <span class="selo">Sua avaliação</span> }
+            <span class="data">{{ a.data | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <app-estrelas [nota]="a.nota" />
+          <p class="comentario">{{ a.comentario }}</p>
+
+          @if (respondendoId() === a.id) {
+            <div class="responder">
+              <mat-form-field appearance="outline">
+                <mat-label>Sua resposta</mat-label>
+                <textarea matInput rows="2" maxlength="300" [(ngModel)]="resposta"></textarea>
+                <mat-hint>Deixe vazio para apagar a resposta.</mat-hint>
+              </mat-form-field>
+              <div class="acoes">
+                <button mat-button type="button" (click)="respondendoId.set(null)">Cancelar</button>
+                <button mat-flat-button type="button" (click)="salvarResposta(a)">Salvar resposta</button>
+              </div>
+            </div>
+          } @else if (a.resposta) {
+            <div class="resposta">
+              <span class="quem"><mat-icon>storefront</mat-icon> Resposta de {{ produto().vendedorNome || 'vendedor' }}</span>
+              <p>{{ a.resposta }}</p>
+            </div>
+          }
+
+          @if (ehMinha(a) || ehDono()) {
+            <div class="acoes">
+              @if (ehMinha(a) && !ehDono()) {
+                <button mat-button type="button" (click)="editar(a)"><mat-icon>edit</mat-icon> Editar</button>
+              }
+              @if (ehDono() && respondendoId() !== a.id) {
+                <button mat-button type="button" (click)="abrirResposta(a)">
+                  <mat-icon>reply</mat-icon> {{ a.resposta ? 'Editar resposta' : 'Responder' }}
+                </button>
+              }
+              <button mat-button type="button" class="excluir" (click)="excluir(a)">
+                <mat-icon>delete</mat-icon> Excluir
+              </button>
+            </div>
+          }
+        </li>
+      }
+    </ul>
+  }
+</section>
