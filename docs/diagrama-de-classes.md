@@ -11,50 +11,70 @@ O sistema tem 4 entidades: **Vendedor**, **Produto**, **Avaliação** e **Horár
 
 ```mermaid
 classDiagram
-    direction LR
+    direction TB
 
     class Vendedor {
-        +number id
-        +string nome
-        +string email
-        +string senhaHash
-        +string telefone
-        +string nomeNegocio
-        +string localizacao
+        +id: int
+        +nome: string
+        +email: string
+        +senhaHash: string
+        +telefone: string
+        +nomeNegocio: string
+        +localizacao: string
+        +cadastrar()
+        +login()
+        +editarPerfil()
+        +alterarSenha()
+        +excluirConta()
     }
 
     class Produto {
-        +number id
-        +string nome
-        +string descricao
-        +number preco
-        +string imagemUrl
-        +boolean disponivel
-        +string localizacao
-        +number vendedorId
+        +id: int
+        +nome: string
+        +descricao: string
+        +preco: float
+        +imagemUrl: string
+        +disponivel: boolean
+        +localizacao: string
+        +vendedorId: int
+        +cadastrar()
+        +editar()
+        +excluir()
+        +alterarDisponibilidade()
     }
 
     class Avaliacao {
-        +number id
-        +number produtoId
-        +string autorNome
-        +number nota
-        +string comentario
-        +string data
+        +id: int
+        +produtoId: int
+        +autorNome: string
+        +nota: int
+        +comentario: string
+        +data: date
+        +publicar()
+        +editar()
+        +excluir()
     }
 
     class HorarioAtendimento {
-        +number id
-        +number vendedorId
-        +string dia
-        +string inicio
-        +string fim
-        +string local
+        +id: int
+        +vendedorId: int
+        +dia: string
+        +inicio: string
+        +fim: string
+        +local: string
+        +adicionar()
+        +editar()
+        +excluir()
     }
 
-    Vendedor "1" *-- "0..*" Produto : vende
-    Vendedor "1" *-- "0..*" HorarioAtendimento : atende em
-    Produto "1" *-- "0..*" Avaliacao : recebe
+    Vendedor "1" -- "0..*" Produto
+    Vendedor "1" -- "0..*" HorarioAtendimento
+    Produto "1" -- "0..*" Avaliacao
+
+    style Vendedor fill:#e6e6e6,stroke:#555555
+    style Produto fill:#c8f5c8,stroke:#3a8a3a
+    style Avaliacao fill:#cde4ff,stroke:#3a6ea5
+    style HorarioAtendimento fill:#ffe0c2,stroke:#c0702a
 ```
 
 </details>
@@ -72,14 +92,22 @@ classDiagram
 
 | Relacionamento | Multiplicidade | Significado |
 |---|---|---|
-| Vendedor → Produto | 1 para 0..* | Um vendedor tem vários produtos; cada produto pertence a um vendedor (`vendedorId`). |
-| Vendedor → HorarioAtendimento | 1 para 0..* | Um vendedor tem vários horários; cada horário pertence a um vendedor (`vendedorId`). |
-| Produto → Avaliacao | 1 para 0..* | Um produto recebe várias avaliações; cada avaliação é de um produto (`produtoId`). |
+| Vendedor — Produto | 1 para 0..* | Um vendedor tem vários produtos; cada produto pertence a um vendedor (`vendedorId`). |
+| Vendedor — HorarioAtendimento | 1 para 0..* | Um vendedor tem vários horários; cada horário pertence a um vendedor (`vendedorId`). |
+| Produto — Avaliacao | 1 para 0..* | Um produto recebe várias avaliações; cada avaliação é de um produto (`produtoId`). |
 
-Os três relacionamentos são de **composição** (losango preenchido): a parte não existe sem o dono. Por isso, excluir a conta do vendedor apaga os produtos e os horários dele, e excluir um produto apaga as avaliações dele.
+## Métodos
+
+Os métodos de cada classe são as ações que o usuário faz pelas telas do sistema:
+
+- **Vendedor:** cadastrar a conta, fazer login, editar o perfil, alterar a senha e excluir a conta.
+- **Produto:** cadastrar, editar, excluir e marcar como disponível ou indisponível.
+- **Avaliacao:** publicar, editar e excluir (só a própria avaliação).
+- **HorarioAtendimento:** adicionar, editar e excluir (só os próprios horários).
 
 ## Observações
 
 - A senha não é guardada: o sistema guarda só o hash dela (`senhaHash`).
 - O produto também guarda uma cópia do nome do negócio e do telefone do vendedor para mostrar no catálogo. Esses campos não aparecem no diagrama porque vêm do Vendedor.
+- Excluir a conta do vendedor apaga os produtos e os horários dele, e excluir um produto apaga as avaliações dele.
 - O Painel do vendedor não é uma entidade: ele calcula os indicadores a partir de Produto, Avaliacao e HorarioAtendimento.
