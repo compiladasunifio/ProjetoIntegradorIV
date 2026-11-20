@@ -6,20 +6,16 @@
 </section>
 
 <main class="pagina">
-  @if (!carregando() && categoriasComProdutos().length) {
-    <mat-chip-listbox class="categorias" aria-label="Filtrar por categoria" hideSingleSelectionIndicator>
-      <mat-chip-option [selected]="categoriaId() === null" (click)="escolherCategoria(null)">
-        Todas
-      </mat-chip-option>
-      @for (c of categoriasComProdutos(); track c.id) {
-        <mat-chip-option [selected]="categoriaId() === c.id" (click)="escolherCategoria(c.id)">
-          <mat-icon matChipAvatar>{{ c.icone }}</mat-icon> {{ c.nome }}
-        </mat-chip-option>
-      }
-    </mat-chip-listbox>
-  }
-
   <div class="filtros">
+    <mat-form-field appearance="outline" class="filtro-categoria" subscriptSizing="dynamic">
+      <mat-label>Categoria</mat-label>
+      <mat-select [(ngModel)]="categoriaId">
+        <mat-option [value]="null">Todas</mat-option>
+        @for (c of categorias(); track c.id) {
+          <mat-option [value]="c.id">{{ c.nome }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
     <mat-slide-toggle [(ngModel)]="somenteDisponiveis">Somente disponíveis</mat-slide-toggle>
     @if (!carregando()) {
       <span class="contagem">{{ filtrados().length }} de {{ produtos().length }} produtos</span>

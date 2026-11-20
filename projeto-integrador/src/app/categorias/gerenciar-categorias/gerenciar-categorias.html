@@ -1,76 +1,36 @@
 <main class="pagina">
-  <h1>Categorias</h1>
-  <p class="sub">As categorias organizam o catálogo. Todos os vendedores usam as mesmas.</p>
-
   <mat-card appearance="outlined">
-    <form #form="ngForm" (ngSubmit)="salvar(form)" novalidate>
-      <mat-card-content class="formulario">
-        <h2>{{ editandoId() === null ? 'Nova categoria' : 'Editar categoria' }}</h2>
+    <mat-card-header>
+      <mat-card-title>Categorias</mat-card-title>
+    </mat-card-header>
 
-        <div class="campos">
-          <mat-form-field appearance="outline" class="nome">
-            <mat-label>Nome</mat-label>
-            <input matInput name="nome" required maxlength="30" [(ngModel)]="dados.nome">
-            <mat-error>Informe o nome da categoria.</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="icone">
-            <mat-label>Ícone</mat-label>
-            <mat-select name="icone" required [(ngModel)]="dados.icone">
-              <mat-select-trigger>
-                <span class="opcao"><mat-icon>{{ dados.icone }}</mat-icon></span>
-              </mat-select-trigger>
-              @for (i of icones; track i.icone) {
-                <mat-option [value]="i.icone">
-                  <span class="opcao"><mat-icon>{{ i.icone }}</mat-icon> {{ i.nome }}</span>
-                </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        @if (erro()) {
-          <p class="erro" role="alert">{{ erro() }}</p>
+    <mat-card-content>
+      <form class="linha" (ngSubmit)="salvar()">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ editandoId === null ? 'Nova categoria' : 'Editar categoria' }}</mat-label>
+          <input matInput name="nome" required [(ngModel)]="nome">
+        </mat-form-field>
+        <button mat-flat-button type="submit">{{ editandoId === null ? 'Adicionar' : 'Salvar' }}</button>
+        @if (editandoId !== null) {
+          <button mat-button type="button" (click)="cancelar()">Cancelar</button>
         }
-        @if (mensagem()) {
-          <p class="aviso" role="status">{{ mensagem() }}</p>
-        }
-      </mat-card-content>
+      </form>
 
-      <mat-card-actions align="end">
-        @if (editandoId() !== null) {
-          <button mat-button type="button" (click)="cancelar(form)">Cancelar</button>
-        }
-        <button mat-flat-button type="submit" [disabled]="salvando()">
-          {{ editandoId() === null ? 'Adicionar' : 'Salvar alterações' }}
-        </button>
-      </mat-card-actions>
-    </form>
-  </mat-card>
-
-  @if (carregando()) {
-    <p>Carregando...</p>
-  } @else {
-    <ul class="lista">
-      @for (c of categorias(); track c.id) {
-        <li [class.selecionada]="editandoId() === c.id">
-          <span class="icone-circulo"><mat-icon>{{ c.icone }}</mat-icon></span>
-          <span class="info">
-            <strong>{{ c.nome }}</strong>
-            <span class="contagem">
-              {{ totalProdutos(c.id) }} {{ totalProdutos(c.id) === 1 ? 'produto' : 'produtos' }}
-            </span>
-          </span>
-          <button mat-icon-button type="button" (click)="editar(c, form)" [attr.aria-label]="'Editar ' + c.nome">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button type="button" class="excluir" (click)="excluir(c)" [attr.aria-label]="'Excluir ' + c.nome">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </li>
-      } @empty {
-        <li class="vazio">Nenhuma categoria cadastrada.</li>
+      @if (mensagem()) {
+        <p>{{ mensagem() }}</p>
       }
-    </ul>
-  }
+
+      <ul>
+        @for (c of categorias(); track c.id) {
+          <li>
+            <span>{{ c.nome }}</span>
+            <button mat-button type="button" (click)="editar(c)">Editar</button>
+            <button mat-button type="button" (click)="excluir(c)">Excluir</button>
+          </li>
+        } @empty {
+          <li>Nenhuma categoria cadastrada.</li>
+        }
+      </ul>
+    </mat-card-content>
+  </mat-card>
 </main>
