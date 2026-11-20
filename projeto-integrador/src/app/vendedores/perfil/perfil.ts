@@ -5,6 +5,7 @@ import { switchMap } from 'rxjs';
 import { Vendedor } from '../../shared/models/vendedor';
 import { AuthService } from '../../shared/services/auth-service';
 import { ProdutoService } from '../../shared/services/produto-service';
+import { HorarioService } from '../../shared/services/horario-service';
 
 type DadosVendedor = Omit<Vendedor, 'id'>;
 
@@ -17,6 +18,7 @@ type DadosVendedor = Omit<Vendedor, 'id'>;
 export class Perfil {
   protected auth = inject(AuthService);
   private produtoService = inject(ProdutoService);
+  private horarioService = inject(HorarioService);
   private router = inject(Router);
 
   editando = signal(false);
@@ -121,6 +123,7 @@ export class Perfil {
     }
 
     this.excluindo.set(true);
+    this.horarioService.excluirPorVendedor(vendedor.id);
     this.produtoService
       .excluirPorVendedor(vendedor.id)
       .pipe(switchMap(() => this.auth.excluirConta()))

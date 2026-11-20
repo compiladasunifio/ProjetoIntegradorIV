@@ -7,15 +7,6 @@
 
 <main class="pagina">
   <div class="filtros">
-    <mat-form-field appearance="outline" class="filtro-categoria" subscriptSizing="dynamic">
-      <mat-label>Categoria</mat-label>
-      <mat-select [(ngModel)]="categoriaId">
-        <mat-option [value]="null">Todas</mat-option>
-        @for (c of categorias(); track c.id) {
-          <mat-option [value]="c.id">{{ c.nome }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
     <mat-slide-toggle [(ngModel)]="somenteDisponiveis">Somente disponíveis</mat-slide-toggle>
     @if (!carregando()) {
       <span class="contagem">{{ filtrados().length }} de {{ produtos().length }} produtos</span>
@@ -34,9 +25,6 @@
             <div class="foto sem-imagem"><mat-icon>restaurant</mat-icon></div>
           }
           <mat-card-content>
-            @if (p.categoriaNome) {
-              <span class="categoria">{{ p.categoriaNome }}</span>
-            }
             <h3>{{ p.nome }}</h3>
             <p class="vendedor">{{ p.vendedorNome }}</p>
             <p class="local"><mat-icon>location_on</mat-icon> {{ p.localizacao }}</p>
@@ -63,7 +51,7 @@
         <div class="vazio">
           <mat-icon>search_off</mat-icon>
           <p>Nenhum produto encontrado.</p>
-          @if (somenteDisponiveis() || categoriaId() !== null) {
+          @if (somenteDisponiveis()) {
             <button mat-button type="button" (click)="mostrarTodos()">Mostrar todos</button>
           }
         </div>

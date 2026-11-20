@@ -90,3 +90,14 @@ h1 { margin: 12px 0 4px; font-size: 1.8rem; }
 
   mat-icon { width: 48px; height: 48px; font-size: 48px; color: var(--uf-laranja); }
 }
+.horarios {
+  margin-bottom: 20px;
+
+  p {
+    margin: 4px 0 0;
+  }
+
+  .sem-horario {
+    opacity: 0.7;
+  }
+}
