@@ -4,21 +4,51 @@
   padding: 0 16px;
 }
 
+h1 {
+  margin: 0;
+}
+
+.sub {
+  margin: 4px 0 24px;
+  opacity: 0.7;
+}
+
 .cartoes {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
 }
 
+mat-card {
+  border-top: 4px solid var(--uf-laranja);
+}
+
 mat-card-content {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  text-align: center;
+  gap: 8px;
+  padding: 20px;
+}
+
+.titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+
+  mat-icon {
+    color: var(--uf-laranja);
+  }
 }
 
 .numero {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
+  line-height: 1.1;
   color: var(--uf-vermelho);
+}
+
+.descricao {
+  font-size: 0.85rem;
+  opacity: 0.7;
 }
