@@ -4,7 +4,8 @@ import localePt from '@angular/common/locales/pt';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { SharedModule } from './shared/shared-module';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 
 // Números, moedas e datas no formato brasileiro (4,5 · R$ 7,50 · 20/11/2026)
 registerLocaleData(localePt);
@@ -16,7 +17,9 @@ registerLocaleData(localePt);
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SharedModule
+    // O cabeçalho só usa toolbar e botões; o resto do Material vem com cada módulo de tela
+    MatToolbarModule,
+    MatButtonModule,
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
