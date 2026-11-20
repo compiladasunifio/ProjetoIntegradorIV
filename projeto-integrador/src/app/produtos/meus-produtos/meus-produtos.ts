@@ -1,4 +1,7 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { switchMap, tap } from 'rxjs';
+import { Avaliacao } from '../../shared/models/avaliacao';
+import { AvaliacaoService, mediaNotas } from '../../shared/services/avaliacao-service';
 import { ActivatedRoute } from '@angular/router';
 import { Produto } from '../../shared/models/produto';
 import { ProdutoService } from '../../shared/services/produto-service';
@@ -14,8 +17,20 @@ export class MeusProdutos implements OnInit {
   private produtoService = inject(ProdutoService);
   private auth = inject(AuthService);
   private route = inject(ActivatedRoute);
+  private avaliacaoService = inject(AvaliacaoService);
 
   produtos = signal<Produto[]>([]);
+  private avaliacoes = signal<Avaliacao[]>([]);
+
+  // Nota média e quantidade de avaliações de cada produto
+  notas = computed(() => {
+    const resumo = new Map<number, { media: number | null; total: number }>();
+    for (const p of this.produtos()) {
+      const lista = this.avaliacoes().filter(a => a.produtoId === p.id);
+      resumo.set(p.id, { media: mediaNotas(lista), total: lista.length });
+    }
+    return resumo;
+  });
   carregando = signal(true);
   mensagem = signal('');
   // ids dos produtos com alguma operação em andamento
@@ -25,10 +40,16 @@ export class MeusProdutos implements OnInit {
     const editado = this.route.snapshot.queryParamMap.get('editado');
     if (editado) this.mensagem.set(`Produto "${editado}" atualizado.`);
 
-    this.produtoService.listarPorVendedor(this.auth.vendedor()!.id).subscribe(lista => {
-      this.produtos.set(lista);
-      this.carregando.set(false);
-    });
+    this.produtoService
+      .listarPorVendedor(this.auth.vendedor()!.id)
+      .pipe(
+        tap(lista => this.produtos.set(lista)),
+        switchMap(lista => this.avaliacaoService.listarPorProdutos(lista.map(p => p.id))),
+      )
+      .subscribe(avaliacoes => {
+        this.avaliacoes.set(avaliacoes);
+        this.carregando.set(false);
+      });
   }
 
   ocupado(id: number): boolean {

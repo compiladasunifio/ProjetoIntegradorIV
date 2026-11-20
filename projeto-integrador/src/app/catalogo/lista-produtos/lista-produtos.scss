@@ -18,6 +18,11 @@
   padding: 24px 16px 48px;
 }
 
+.categorias {
+  display: block;
+  margin-bottom: 12px;
+}
+
 .filtros {
   display: flex;
   flex-wrap: wrap;
@@ -57,7 +62,27 @@
     mat-icon { width: 48px; height: 48px; font-size: 48px; }
   }
 
-  h3 { margin: 12px 0 2px; }
+  h3 { margin: 4px 0 2px; }
+
+  .categoria {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--uf-laranja);
+  }
+
+  .nota {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 6px 0 0;
+    font-size: 0.85rem;
+
+    &.sem-nota { opacity: 0.6; }
+  }
 
   .vendedor {
     margin: 0 0 6px;

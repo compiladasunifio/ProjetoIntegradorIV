@@ -3,6 +3,8 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../shared/services/auth-service';
 import { ProdutoService } from '../../shared/services/produto-service';
+import { CategoriaService } from '../../shared/services/categoria-service';
+import { Categoria } from '../../shared/models/categoria';
 
 const TIPOS_ACEITOS = ['image/jpeg', 'image/png', 'image/webp'];
 const TAMANHO_MAXIMO = 5 * 1024 * 1024; // 5 MB
@@ -18,6 +20,9 @@ export class CadastroProduto implements OnInit {
   private auth = inject(AuthService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private categoriaService = inject(CategoriaService);
+
+  categorias = signal<Categoria[]>([]);
 
   // Preenchido quando a tela é aberta em /produtos/editar/:id
   idEdicao = signal<number | null>(null);
@@ -31,6 +36,8 @@ export class CadastroProduto implements OnInit {
   salvando = signal(false);
 
   ngOnInit(): void {
+    this.categoriaService.listar().subscribe(lista => this.categorias.set(lista));
+
     const param = this.route.snapshot.paramMap.get('id');
     if (param === null) return;
 
@@ -51,6 +58,7 @@ export class CadastroProduto implements OnInit {
         preco: p.preco,
         disponivel: p.disponivel,
         localizacao: p.localizacao,
+        categoriaId: p.categoriaId,
       };
       this.previa.set(p.imagemUrl);
     });
@@ -99,6 +107,8 @@ export class CadastroProduto implements OnInit {
       vendedorId: vendedor.id,
       vendedorNome: vendedor.nomeNegocio || vendedor.nome,
       vendedorTelefone: vendedor.telefone,
+      categoriaId: this.produto.categoriaId,
+      categoriaNome: this.categoriaService.obterPorId(this.produto.categoriaId ?? -1)?.nome,
     };
 
     this.salvando.set(true);
@@ -160,6 +170,7 @@ export class CadastroProduto implements OnInit {
       preco: null as number | null,
       disponivel: true,
       localizacao: '',
+      categoriaId: null as number | null,
     };
   }
 }

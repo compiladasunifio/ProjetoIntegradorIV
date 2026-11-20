@@ -6,6 +6,19 @@
 </section>
 
 <main class="pagina">
+  @if (!carregando() && categoriasComProdutos().length) {
+    <mat-chip-listbox class="categorias" aria-label="Filtrar por categoria" hideSingleSelectionIndicator>
+      <mat-chip-option [selected]="categoriaId() === null" (click)="escolherCategoria(null)">
+        Todas
+      </mat-chip-option>
+      @for (c of categoriasComProdutos(); track c.id) {
+        <mat-chip-option [selected]="categoriaId() === c.id" (click)="escolherCategoria(c.id)">
+          <mat-icon matChipAvatar>{{ c.icone }}</mat-icon> {{ c.nome }}
+        </mat-chip-option>
+      }
+    </mat-chip-listbox>
+  }
+
   <div class="filtros">
     <mat-slide-toggle [(ngModel)]="somenteDisponiveis">Somente disponíveis</mat-slide-toggle>
     @if (!carregando()) {
@@ -25,9 +38,20 @@
             <div class="foto sem-imagem"><mat-icon>restaurant</mat-icon></div>
           }
           <mat-card-content>
+            @if (p.categoriaNome) {
+              <span class="categoria">{{ p.categoriaNome }}</span>
+            }
             <h3>{{ p.nome }}</h3>
             <p class="vendedor">{{ p.vendedorNome }}</p>
             <p class="local"><mat-icon>location_on</mat-icon> {{ p.localizacao }}</p>
+            @if (notas().get(p.id); as n) {
+              <p class="nota">
+                <app-estrelas [nota]="n.media ?? 0" />
+                <span>{{ n.media | number:'1.1-1' }} ({{ n.total }})</span>
+              </p>
+            } @else {
+              <p class="nota sem-nota">Ainda sem avaliações</p>
+            }
             <div class="rodape-card">
               <span class="preco">{{ p.preco | currency:'BRL' }}</span>
               <span class="status" [class.indisponivel]="!p.disponivel">
@@ -43,7 +67,7 @@
         <div class="vazio">
           <mat-icon>search_off</mat-icon>
           <p>Nenhum produto encontrado.</p>
-          @if (somenteDisponiveis()) {
+          @if (somenteDisponiveis() || categoriaId() !== null) {
             <button mat-button type="button" (click)="mostrarTodos()">Mostrar todos</button>
           }
         </div>

@@ -19,11 +19,23 @@
           }
           <mat-card-header>
             <mat-card-title>{{ p.nome }}</mat-card-title>
-            <mat-card-subtitle>{{ p.localizacao }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ p.categoriaNome || 'Sem categoria' }} · {{ p.localizacao }}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
             <p>{{ p.descricao }}</p>
             <p class="preco">{{ p.preco | currency:'BRL' }}</p>
+            @if (notas().get(p.id); as n) {
+              <p class="nota">
+                @if (n.total) {
+                  <app-estrelas [nota]="n.media ?? 0" />
+                  <a [routerLink]="['/catalogo/produto', p.id]">
+                    {{ n.media | number:'1.1-1' }} · {{ n.total }} {{ n.total === 1 ? 'avaliação' : 'avaliações' }}
+                  </a>
+                } @else {
+                  <span class="sem-nota">Ainda sem avaliações</span>
+                }
+              </p>
+            }
             <mat-slide-toggle [checked]="p.disponivel" [disabled]="ocupado(p.id)"
                               (change)="alternarDisponivel(p, $event.checked)">
               <span [ngClass]="{ 'disponivel': p.disponivel, 'indisponivel': !p.disponivel }">

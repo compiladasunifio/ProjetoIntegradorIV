@@ -1,0 +1,40 @@
+:host {
+  display: inline-flex;
+}
+
+.estrelas {
+  display: inline-flex;
+  align-items: center;
+  color: #f2a600;
+
+  mat-icon {
+    width: 1.15em;
+    height: 1.15em;
+    font-size: 1.15em;
+  }
+}
+
+.editavel mat-icon {
+  width: 32px;
+  height: 32px;
+  font-size: 32px;
+}
+
+.estrela {
+  display: grid;
+  place-items: center;
+  padding: 2px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--uf-vermelho);
+  }
+}

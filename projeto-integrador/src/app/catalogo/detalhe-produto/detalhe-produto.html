@@ -24,6 +24,7 @@
             <p class="descricao">{{ p.descricao }}</p>
 
             <ul class="info">
+              <li><mat-icon>category</mat-icon> {{ p.categoriaNome || 'Sem categoria' }}</li>
               <li><mat-icon>storefront</mat-icon> {{ p.vendedorNome || 'Vendedor da faculdade' }}</li>
               <li><mat-icon>location_on</mat-icon> {{ p.localizacao }}</li>
             </ul>
@@ -38,6 +39,8 @@
           </mat-card-content>
         </mat-card>
       </div>
+
+      <app-avaliacoes-produto [produto]="p" />
     } @else {
       <div class="vazio">
         <mat-icon>search_off</mat-icon>

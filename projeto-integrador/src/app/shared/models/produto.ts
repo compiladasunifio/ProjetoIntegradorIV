@@ -7,6 +7,8 @@ export interface Produto {
   disponivel: boolean;
   localizacao: string;
   vendedorId: number;
+  categoriaId: number | null;
+  categoriaNome?: string;
   vendedorNome?: string;
   vendedorTelefone?: string;
 }

@@ -8,6 +8,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
+import { Estrelas } from './components/estrelas/estrelas';
 
 const MATERIAL = [
   MatCardModule,
@@ -17,10 +20,13 @@ const MATERIAL = [
   MatToolbarModule,
   MatSlideToggleModule,
   MatIconModule,
+  MatSelectModule,
+  MatChipsModule,
 ];
 
 @NgModule({
+  declarations: [Estrelas],
   imports: [CommonModule, FormsModule, ...MATERIAL],
-  exports: [FormsModule, ...MATERIAL],
+  exports: [FormsModule, ...MATERIAL, Estrelas],
 })
 export class SharedModule {}

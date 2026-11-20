@@ -52,3 +52,12 @@ mat-card-actions {
 .excluir {
   color: var(--uf-vermelho);
 }
+
+.nota {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+
+  .sem-nota { opacity: 0.6; }
+}

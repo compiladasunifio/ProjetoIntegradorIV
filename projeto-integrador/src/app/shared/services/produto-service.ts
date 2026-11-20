@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of, delay } from 'rxjs';
 import { Produto } from '../models/produto';
 import { Vendedor } from '../models/vendedor';
+import { Categoria } from '../models/categoria';
+import { AvaliacaoService } from './avaliacao-service';
 
 const CHAVE_PRODUTOS = 'unifood.produtos';
 
@@ -11,21 +13,25 @@ const PRODUTOS_EXEMPLO: Produto[] = [
     id: 1, nome: 'Brigadeiro gourmet', descricao: 'Caixa com 6 unidades, sabores variados.',
     preco: 12, imagemUrl: '', disponivel: true, localizacao: 'Bloco 5',
     vendedorId: 1, vendedorNome: 'Doces da Isa', vendedorTelefone: '11900000000',
+    categoriaId: 1, categoriaNome: 'Doces',
   },
   {
     id: 2, nome: 'Pão de mel', descricao: 'Recheado com doce de leite e coberto com chocolate.',
     preco: 7.5, imagemUrl: '', disponivel: true, localizacao: 'Biblioteca',
     vendedorId: 2, vendedorNome: 'Cantinho do Bruno', vendedorTelefone: '11900000001',
+    categoriaId: 1, categoriaNome: 'Doces',
   },
   {
     id: 3, nome: 'Coxinha de frango', descricao: 'Salgado frito na hora, com catupiry.',
     preco: 6, imagemUrl: '', disponivel: false, localizacao: 'Bloco 6',
     vendedorId: 3, vendedorNome: 'Salgados da Carol', vendedorTelefone: '11900000002',
+    categoriaId: 2, categoriaNome: 'Salgados',
   },
   {
     id: 4, nome: 'Marmita fitness', descricao: 'Frango, arroz integral e legumes. Encomende até as 10h.',
     preco: 18, imagemUrl: '', disponivel: true, localizacao: 'Bloco 2',
     vendedorId: 4, vendedorNome: 'Fit Express', vendedorTelefone: '11900000003',
+    categoriaId: 3, categoriaNome: 'Refeições',
   },
 ];
 
@@ -33,6 +39,7 @@ export type DadosProduto = Omit<Produto, 'id'>;
 
 @Injectable({ providedIn: 'root' })
 export class ProdutoService {
+  private avaliacaoService = inject(AvaliacaoService);
   // SIMULAÇÃO: produtos guardados só neste navegador (sessionStorage), sem banco.
   private produtos: Produto[] = this.carregar();
 
@@ -74,16 +81,22 @@ export class ProdutoService {
     const antes = this.produtos.length;
     this.produtos = this.produtos.filter(p => p.id !== id);
     const removeu = this.produtos.length < antes;
-    if (removeu) this.persistir();
+    if (removeu) {
+      this.persistir();
+      this.avaliacaoService.excluirPorProdutos([id]);
+    }
     return of(removeu).pipe(delay(400));
   }
 
   // Usado quando o vendedor exclui a conta.
   excluirPorVendedor(vendedorId: number): Observable<number> {
-    const antes = this.produtos.length;
+    const ids = this.produtos.filter(p => p.vendedorId === vendedorId).map(p => p.id);
     this.produtos = this.produtos.filter(p => p.vendedorId !== vendedorId);
-    const removidos = antes - this.produtos.length;
-    if (removidos) this.persistir();
+    if (ids.length) {
+      this.persistir();
+      this.avaliacaoService.excluirPorProdutos(ids);
+    }
+    const removidos = ids.length;
     return of(removidos).pipe(delay(300));
   }
 
@@ -94,6 +107,21 @@ export class ProdutoService {
       if (p.vendedorId !== vendedor.id) continue;
       p.vendedorNome = vendedor.nomeNegocio || vendedor.nome;
       p.vendedorTelefone = vendedor.telefone;
+      mudou = true;
+    }
+    if (mudou) this.persistir();
+  }
+
+  contarPorCategoria(categoriaId: number): number {
+    return this.produtos.filter(p => p.categoriaId === categoriaId).length;
+  }
+
+  // Mantém o nome da categoria guardado nos produtos igual ao da categoria.
+  sincronizarCategoria(categoria: Categoria): void {
+    let mudou = false;
+    for (const p of this.produtos) {
+      if (p.categoriaId !== categoria.id) continue;
+      p.categoriaNome = categoria.nome;
       mudou = true;
     }
     if (mudou) this.persistir();
@@ -110,7 +138,8 @@ export class ProdutoService {
   private carregar(): Produto[] {
     try {
       const texto = sessionStorage.getItem(CHAVE_PRODUTOS);
-      if (texto) return JSON.parse(texto);
+      // Produtos salvos antes de existirem categorias ficam sem categoria.
+      if (texto) return (JSON.parse(texto) as Produto[]).map(p => ({ ...p, categoriaId: p.categoriaId ?? null }));
     } catch {}
     return this.copiar(PRODUTOS_EXEMPLO);
   }
