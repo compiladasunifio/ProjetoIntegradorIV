@@ -1,0 +1,37 @@
+<main class="pagina">
+  <h1>Painel</h1>
+
+  @if (carregando()) {
+    <p>Carregando...</p>
+  } @else {
+    <div class="cartoes">
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <span class="numero">{{ produtosDisponiveis() }} de {{ totalProdutos() }}</span>
+          <span>produtos disponíveis</span>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <span class="numero">{{ notaMedia() === null ? '-' : (notaMedia() | number:'1.1-1') }}</span>
+          <span>nota média</span>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <span class="numero">{{ totalAvaliacoes() }}</span>
+          <span>avaliações recebidas</span>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <span class="numero">{{ horasSemana() | number:'1.0-1' }} h</span>
+          <span>de atendimento por semana</span>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+</main>
