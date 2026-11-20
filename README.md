@@ -8,26 +8,8 @@ Projeto Integrador IV, feito em Angular com Angular Material.
 
 **Online:** _(link da aplicação publicada)_
 
-**No seu computador:**
 
-1. Instale o [Node.js](https://nodejs.org/) (versão 22 ou mais recente).
-2. Baixe o projeto e entre na pasta do app:
-
-   ```bash
-   git clone https://github.com/compiladasunifio/ProjetoIntegradorIV.git
-   cd ProjetoIntegradorIV/projeto-integrador
-   ```
-
-3. Instale as dependências e inicie a aplicação:
-
-   ```bash
-   npm install
-   npm start
-   ```
-
-4. Abra o navegador em **http://localhost:4200**.
-
-> **Importante:** a aplicação ainda não tem banco de dados. As informações ficam salvas só no navegador e são apagadas quando você fecha a aba. Ao abrir de novo, o catálogo volta com os produtos de exemplo.
+> Importante: a aplicação ainda não tem banco de dados. As informações ficam salvas só no navegador e são apagadas quando você fecha a aba. Ao abrir de novo, o catálogo volta com os produtos de exemplo.
 
 ## Como usar
 

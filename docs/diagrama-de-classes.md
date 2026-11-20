@@ -1,88 +1,9 @@
 # Diagrama de classes – UniFood
 
-O UniFood é um catálogo onde alunos que vendem comida na faculdade divulgam seus produtos. O cliente encontra o produto, vê onde e quando o vendedor atende e entra em contato pelo WhatsApp.
-
 O sistema tem 4 entidades: **Vendedor**, **Produto**, **Avaliação** e **Horário de atendimento**.
 
-![Diagrama de classes](diagrama-de-classes.png)
-
-<details>
-<summary>Código do diagrama (Mermaid)</summary>
-
-```mermaid
-classDiagram
-    direction TB
-
-    class Vendedor {
-        +id: int
-        +nome: string
-        +email: string
-        +senhaHash: string
-        +telefone: string
-        +nomeNegocio: string
-        +localizacao: string
-        +cadastrar()
-        +login()
-        +editarPerfil()
-        +alterarSenha()
-        +excluirConta()
-    }
-
-    class Produto {
-        +id: int
-        +nome: string
-        +descricao: string
-        +preco: float
-        +imagemUrl: string
-        +disponivel: boolean
-        +localizacao: string
-        +vendedorId: int
-        +cadastrar()
-        +editar()
-        +excluir()
-        +alterarDisponibilidade()
-    }
-
-    class Avaliacao {
-        +id: int
-        +produtoId: int
-        +autorNome: string
-        +nota: int
-        +comentario: string
-        +data: date
-        +publicar()
-        +editar()
-        +excluir()
-    }
-
-    class HorarioAtendimento {
-        +id: int
-        +vendedorId: int
-        +dia: string
-        +inicio: string
-        +fim: string
-        +local: string
-        +adicionar()
-        +editar()
-        +excluir()
-    }
-
-    Vendedor "1" -- "0..*" Produto
-    Vendedor "1" -- "0..*" HorarioAtendimento
-    Produto "1" -- "0..*" Avaliacao
-
-    style Vendedor fill:#e6e6e6,stroke:#555555
-    style Produto fill:#c8f5c8,stroke:#3a8a3a
-    style Avaliacao fill:#cde4ff,stroke:#3a6ea5
-    style HorarioAtendimento fill:#ffe0c2,stroke:#c0702a
-```
-
-</details>
-
-## Entidades
 
 | Entidade | O que representa | Quem cadastra, edita e exclui |
-|---|---|---|
 | **Vendedor** | Aluno que vende na faculdade. Faz login com e-mail e senha. | O próprio vendedor (tela de cadastro e página Meu perfil) |
 | **Produto** | Item à venda, com preço, foto e se está disponível. | O vendedor dono do produto (Novo produto e Meus produtos) |
 | **Avaliacao** | Nota de 1 a 5 e comentário deixados por um visitante sobre um produto. | O visitante que escreveu a avaliação (página do produto) |
