@@ -1,8 +1,5 @@
-import { Component, OnInit, computed, inject, input, signal, viewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, computed, inject, input, signal } from '@angular/core';
 import { Avaliacao } from '../../shared/models/avaliacao';
-import { Produto } from '../../shared/models/produto';
-import { AuthService } from '../../shared/services/auth-service';
 import { AvaliacaoService, mediaNotas } from '../../shared/services/avaliacao-service';
 
 // Seção de avaliações na página de detalhe do produto.
@@ -14,116 +11,67 @@ import { AvaliacaoService, mediaNotas } from '../../shared/services/avaliacao-se
 })
 export class AvaliacoesProduto implements OnInit {
   private avaliacaoService = inject(AvaliacaoService);
-  private auth = inject(AuthService);
 
-  produto = input.required<Produto>();
-  private formRef = viewChild<NgForm>('f');
+  produtoId = input.required<number>();
 
   avaliacoes = signal<Avaliacao[]>([]);
-  carregando = signal(true);
-  salvando = signal(false);
-  editandoId = signal<number | null>(null); // avaliação sendo editada pelo autor
-  respondendoId = signal<number | null>(null); // avaliação sendo respondida pelo vendedor
-  mensagem = signal('');
-  erroNota = signal(false);
-
-  form = this.vazia();
-  resposta = '';
-
   media = computed(() => mediaNotas(this.avaliacoes()));
-  // Quantas avaliações de cada nota, da 5 para a 1
-  distribuicao = computed(() =>
-    [5, 4, 3, 2, 1].map(nota => {
-      const qtd = this.avaliacoes().filter(a => a.nota === nota).length;
-      return { nota, qtd, pct: this.avaliacoes().length ? (qtd / this.avaliacoes().length) * 100 : 0 };
-    }),
-  );
-  ehDono = computed(() => this.auth.vendedor()?.id === this.produto().vendedorId);
+  editandoId: number | null = null;
+  mensagem = signal('');
+
+  form = { autorNome: '', nota: 0, comentario: '' };
 
   ngOnInit(): void {
-    this.recarregar();
+    this.carregar();
   }
 
   ehMinha(a: Avaliacao): boolean {
     return this.avaliacaoService.ehMinha(a.id);
   }
 
-  enviar(f: NgForm): void {
-    if (!this.form.nota) this.erroNota.set(true);
-    if (f.invalid || !this.form.nota || this.salvando()) return;
+  salvar(): void {
+    if (!this.form.nota) {
+      this.mensagem.set('Escolha uma nota de 1 a 5.');
+      return;
+    }
+    if (!this.form.autorNome.trim() || !this.form.comentario.trim()) return;
 
     const dados = {
       autorNome: this.form.autorNome.trim(),
       nota: this.form.nota,
       comentario: this.form.comentario.trim(),
     };
-    const id = this.editandoId();
-    this.salvando.set(true);
-    this.mensagem.set('');
+    const acao = this.editandoId === null
+      ? this.avaliacaoService.criar({ ...dados, produtoId: this.produtoId() })
+      : this.avaliacaoService.atualizar(this.editandoId, dados);
 
-    const pedido = id === null
-      ? this.avaliacaoService.criar({ ...dados, produtoId: this.produto().id })
-      : this.avaliacaoService.atualizar(id, dados);
-
-    pedido.subscribe(salva => {
-      this.salvando.set(false);
-      this.mensagem.set(!salva ? 'Não foi possível salvar a avaliação.'
-        : id === null ? 'Obrigado! Sua avaliação foi publicada.' : 'Avaliação atualizada.');
-      this.cancelarEdicao();
-      this.recarregar();
+    acao.subscribe(() => {
+      this.mensagem.set(this.editandoId === null ? 'Avaliação publicada.' : 'Avaliação atualizada.');
+      this.cancelar();
+      this.carregar();
     });
   }
 
   editar(a: Avaliacao): void {
-    this.editandoId.set(a.id);
+    this.editandoId = a.id;
     this.form = { autorNome: a.autorNome, nota: a.nota, comentario: a.comentario };
-    this.formRef()?.resetForm(this.form);
-    this.erroNota.set(false);
     this.mensagem.set('');
-    document.getElementById('form-avaliacao')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
-  cancelarEdicao(): void {
-    this.editandoId.set(null);
-    this.form = this.vazia();
-    this.formRef()?.resetForm(this.form);
-    this.erroNota.set(false);
-  }
-
-  escolherNota(nota: number): void {
-    this.form.nota = nota;
-    this.erroNota.set(false);
+  cancelar(): void {
+    this.editandoId = null;
+    this.form = { autorNome: '', nota: 0, comentario: '' };
   }
 
   excluir(a: Avaliacao): void {
-    const quem = this.ehMinha(a) ? 'sua avaliação' : `a avaliação de ${a.autorNome}`;
-    if (!confirm(`Excluir ${quem}?`)) return;
+    if (!confirm('Excluir sua avaliação?')) return;
     this.avaliacaoService.excluir(a.id).subscribe(() => {
       this.mensagem.set('Avaliação excluída.');
-      this.recarregar();
+      this.carregar();
     });
   }
 
-  abrirResposta(a: Avaliacao): void {
-    this.respondendoId.set(a.id);
-    this.resposta = a.resposta ?? '';
-  }
-
-  salvarResposta(a: Avaliacao): void {
-    this.avaliacaoService.responder(a.id, this.resposta).subscribe(() => {
-      this.respondendoId.set(null);
-      this.recarregar();
-    });
-  }
-
-  private recarregar(): void {
-    this.avaliacaoService.listarPorProduto(this.produto().id).subscribe(lista => {
-      this.avaliacoes.set(lista);
-      this.carregando.set(false);
-    });
-  }
-
-  private vazia() {
-    return { autorNome: '', nota: 0, comentario: '' };
+  private carregar(): void {
+    this.avaliacaoService.listarPorProduto(this.produtoId()).subscribe(lista => this.avaliacoes.set(lista));
   }
 }
