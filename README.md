@@ -6,7 +6,7 @@ Projeto Integrador IV, feito em Angular com Angular Material.
 
 ## Como acessar
 
-**Online:** _(link da aplicação publicada)_
+**Online:** https://projeto-integrador-iv-five.vercel.app
 
 
 > Importante: a aplicação ainda não tem banco de dados. As informações ficam salvas só no navegador e são apagadas quando você fecha a aba. Ao abrir de novo, o catálogo volta com os produtos de exemplo.
