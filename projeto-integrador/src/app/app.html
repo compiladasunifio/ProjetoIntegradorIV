@@ -9,6 +9,7 @@
     <a mat-button routerLink="/catalogo" routerLinkActive="ativo">Catálogo</a>
 
     @if (auth.logado()) {
+      <a mat-button routerLink="/produtos/painel" routerLinkActive="ativo">Painel</a>
       <a mat-button routerLink="/produtos/meus-produtos" routerLinkActive="ativo">Meus produtos</a>
       <a mat-button routerLink="/produtos/cadastro" routerLinkActive="ativo">Novo produto</a>
     }

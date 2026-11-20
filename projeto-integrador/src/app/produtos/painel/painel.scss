@@ -1,0 +1,24 @@
+.pagina {
+  max-width: 960px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+.cartoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.numero {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--uf-vermelho);
+}
